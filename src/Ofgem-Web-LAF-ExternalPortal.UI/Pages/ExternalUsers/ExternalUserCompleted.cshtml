@@ -1,0 +1,118 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model ExternalUserCompletedModel
+@{
+    ViewData["Title"] = "External user completed - LA Flex - Ofgem";
+}
+
+@if (Model.IsSuccessfulAdd)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <div class="govuk-panel govuk-panel--confirmation  govuk-!-margin-bottom-5">
+                <h1 class="govuk-panel__title">
+                    External user added
+                </h1>
+            </div>
+
+            <p class="govuk-body">
+                The user's Authorised Signatory will receive confirmation of this <strong>via email</strong>.
+            </p>
+
+            <h2>Editing user details</h2>
+
+            <p class="govuk-body">
+                You can edit a user's profile details by locating their name on the
+                <a asp-page="@LafPages.ExternalUsers.ROUTE"
+                   data-test-id="ShowBackToExternalUsersLink"
+                   class="govuk-link">external users' homepage</a>
+                .
+            </p>
+
+            <h2>Deactivating user</h2>
+
+            <p class="govuk-body">
+                You can also deactivate a user, if required, by viewing their user profile.
+            </p>
+
+        </div>
+    </div>
+}
+
+
+@if (Model.IsSuccessfulEdit)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <div class="govuk-panel govuk-panel--confirmation  govuk-!-margin-bottom-5">
+                <h1 class="govuk-panel__title">
+                    External user details updated
+                </h1>
+            </div>
+
+            <p class="govuk-body">
+                We have sent an updated confirmation email to <a class="govuk-link" href="mailto:@Model.ExternalUser.EmailAddress">@Model.ExternalUser.EmailAddress</a> 
+                as well as the Authorised Signatory for the local authority.
+            </p>
+
+        </div>
+    </div>
+}
+
+
+@if (Model.IsSuccessfulDeactivate)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <div class="govuk-panel govuk-panel--confirmation  govuk-!-margin-bottom-5">
+                <h1 class="govuk-panel__title">
+                    External user deactivated
+                </h1>
+            </div>
+
+            <p class="govuk-body">
+                This user no longer has access to the Local Authority Flexible Eligibility portal.
+            </p>
+
+            <p class="govuk-body">
+                This users' Authorised Signatory will receive confirmation of this via email.
+            </p>
+
+        </div>
+    </div>
+}
+
+
+@if (Model.IsSuccessfulReactivate)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <div class="govuk-panel govuk-panel--confirmation  govuk-!-margin-bottom-5">
+                <h1 class="govuk-panel__title">
+                    External user reactivated
+                </h1>
+            </div>
+
+            <p class="govuk-body">
+                This user has regained access to the Local Authority Flexible Eligibility portal.
+            </p>
+
+            <p class="govuk-body">
+                The user and their Authorised Signatory will receive confirmation of this via email.
+            </p>
+
+        </div>
+    </div>
+}
+
+<hr/>
+
+<div class="govuk-button-group govuk-!-static-margin-top-5">
+    <a asp-page="@LafPages.ExternalUsers.ROUTE"
+       data-test-id="ShowBackToExternalUsersLink"
+       class="govuk-link">Back to Manage users</a>
+</div>

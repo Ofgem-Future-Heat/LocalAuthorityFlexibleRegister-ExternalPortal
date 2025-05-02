@@ -1,0 +1,149 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Routes2AdditionalModel
+
+@{
+    ViewData["Title"] = "Additional route 2 proxies - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" class="govuk-back-link"
+   asp-page="@LafPages.Routes2.ROUTE"
+   asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+   asp-route-declarationId="@Model.DeclarationId">Back</a>
+
+
+@if (Model != null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        @await Html.PartialAsync("Shared/_ChangeErrors", Model.DisplayMessage)
+    }
+
+    <form method="POST">
+
+        <input type="hidden" asp-for="DeclarationId"/>
+        <input type="hidden" asp-for="Urn"/>
+        <input type="hidden" asp-for="DoNotShowRoute"/>
+
+        <span class="govuk-caption-l">Change declaration details for @Model.Urn</span>
+
+
+        <div class="govuk-form-group">
+
+            <fieldset class="govuk-fieldset">
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+
+                    <h1 class="govuk-fieldset__heading">
+                        What additional proxy was the household referred under?
+                    </h1>
+
+                </legend>
+
+
+                <div class="govuk-radios" data-module="govuk-radios">
+
+                    @if (Model.DoNotShowRoute != Route2Proxy.Route2Proxy1Text)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="SelectedRoute" id="Route2Proxy1" type="radio" value="@Route2Proxy.Route2Proxy1Text">
+                            <label class="govuk-label govuk-radios__label" for="Route2Proxy1">
+                                @Route2Proxy.Route2Proxy1Text
+                            </label>
+                        </div>
+                    }
+
+                    @if (Model.DoNotShowRoute != Route2Proxy.Route2Proxy2Text)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="SelectedRoute" id="Route2Proxy2" type="radio" value="@Route2Proxy.Route2Proxy2Text">
+                            <label class="govuk-label govuk-radios__label" for="Route2Proxy2">
+                                @Route2Proxy.Route2Proxy2Text
+                            </label>
+                        </div>
+                    }
+
+                    @if (Model.DoNotShowRoute != Route2Proxy.Route2Proxy3Text)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="SelectedRoute" id="Route2Proxy3" type="radio" value="@Route2Proxy.Route2Proxy3Text">
+                            <label class="govuk-label govuk-radios__label" for="Route2Proxy3">
+                                @Route2Proxy.Route2Proxy3Text
+                            </label>
+                        </div>
+                    }
+
+                    @if (Model.DoNotShowRoute != Route2Proxy.Route2Proxy4Text)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="SelectedRoute" id="Route2Proxy4" type="radio" value="@Route2Proxy.Route2Proxy4Text">
+                            <label class="govuk-label govuk-radios__label" for="Route2Proxy4">
+                                @Route2Proxy.Route2Proxy4Text
+                            </label>
+                        </div>
+                    }
+
+                    @if (Model.DoNotShowRoute != Route2Proxy.Route2Proxy5Text)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="SelectedRoute" id="Route2Proxy5" type="radio" value="@Route2Proxy.Route2Proxy5Text">
+                            <label class="govuk-label govuk-radios__label" for="Route2Proxy5">
+                                @Route2Proxy.Route2Proxy5Text
+                            </label>
+                        </div>
+                    }
+
+                    @if (Model.DoNotShowRoute != Route2Proxy.Route2Proxy6Text)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="SelectedRoute" id="Route2Proxy6" type="radio" value="@Route2Proxy.Route2Proxy6Text">
+                            <label class="govuk-label govuk-radios__label" for="Route2Proxy6">
+                                @Route2Proxy.Route2Proxy6Text
+                            </label>
+                        </div>
+                    }
+
+                    @if (Model.DoNotShowRoute != Route2Proxy.Route2Proxy7PPMText)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="SelectedRoute" id="Route2Proxy7PPM" type="radio" value="@Route2Proxy.Route2Proxy7PPMText">
+                            <label class="govuk-label govuk-radios__label" for="Route2Proxy7PPM">
+                                @Route2Proxy.Route2Proxy7PPMText
+                            </label>
+                        </div>
+                    }
+
+                    @if (Model.DoNotShowRoute != Route2Proxy.Route2Proxy7NonPPMText)
+                    {
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" asp-for="SelectedRoute" id="Route2Proxy7NonPPM" type="radio" value="@Route2Proxy.Route2Proxy7NonPPMText">
+                            <label class="govuk-label govuk-radios__label" for="Route2Proxy7NonPPM">
+                                @Route2Proxy.Route2Proxy7NonPPMText
+                            </label>
+                        </div>
+                    }
+
+                </div>
+
+            </fieldset>
+
+        </div>
+
+        <div class="govuk-button-group">
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
+
+            <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+               asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+               asp-route-declarationId="@Model.DeclarationId">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+}

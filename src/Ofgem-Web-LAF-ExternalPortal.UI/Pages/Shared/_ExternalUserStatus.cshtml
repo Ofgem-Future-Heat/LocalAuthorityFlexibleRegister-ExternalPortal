@@ -1,0 +1,10 @@
+﻿@model Ofgem.LAF.SharedLibrary.Models.User
+
+@if (Model.IsDeleted)
+{
+    <span> Inactive </span>
+}
+else
+{
+    <span> Active </span>
+}

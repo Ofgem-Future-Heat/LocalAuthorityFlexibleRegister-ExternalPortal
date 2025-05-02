@@ -1,0 +1,67 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Routes4Model
+
+@{
+    ViewData["Title"] = "Route 4 application number - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" class="govuk-back-link"
+   asp-page="@LafPages.Routes.ROUTE"
+   asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+   asp-route-declarationId="@Model.DeclarationId">Back</a>
+
+
+@if (Model != null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        @await Html.PartialAsync("Shared/_ChangeErrors", Model.DisplayMessage)
+    }
+
+    <form method="POST">
+
+        <input type="hidden" asp-for="DeclarationId" />
+        <input type="hidden" asp-for="Urn" />
+
+        <span class="govuk-caption-l">Change declaration details for @Model.Urn</span>
+
+        <div class="govuk-form-group">
+
+            <fieldset class="govuk-fieldset">
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        What is the route 4 application number?
+                    </h1>
+                </legend>
+
+                <div id="urn-number-hint" class="govuk-hint  govuk-!-width-two-thirds">
+                    Please provide the unique 5 digit application number for the ECO4 flex route 4 application.
+                </div>
+                <br>
+
+                <input class="govuk-input govuk-input--width-20" asp-for="ApplicationNumber" type="number" maxlength="5" aria-describedby="urn-number-hint">
+
+            </fieldset>
+
+        </div>
+
+        <div class="govuk-button-group">
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
+
+            <a asp-page="@LafPages.Routes.ROUTE"
+               asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+               asp-route-declarationId="@Model.DeclarationId">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+}

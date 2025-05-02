@@ -1,0 +1,103 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model ReferralLaRemitModel
+
+@{
+    ViewData["Title"] = "Referral outside LA remit - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" class="govuk-back-link"
+   asp-page="@LafPages.DeclarationDetail.ROUTE"
+   asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+   asp-route-declarationId="@Model.DeclarationId">Back</a>
+
+
+@if (Model != null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        @await Html.PartialAsync("Shared/_ChangeErrors", Model.DisplayMessage)
+    }
+
+    <form method="POST">
+
+        <input type="hidden" asp-for="DeclarationId" />
+        <input type="hidden" asp-for="Urn" />
+
+        <span class="govuk-caption-l">Change declaration details for @Model.Urn</span>
+
+        <div class="govuk-form-group">
+
+            <fieldset class="govuk-fieldset" role="group">
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        Is this referral on behalf of another local authority or devolved authority?
+                    </h1>
+                </legend>
+
+                <div id="urn-number-hint" class="govuk-hint  govuk-!-width-two-thirds">
+                    A local authority can add declarations for households not in its administrative area in specific circumstances.
+                </div>
+                <br>
+
+                <div class="govuk-radios" data-module="govuk-radios">
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="ReferralMadeOnBehalfOfLA" type="radio" asp-for="SelectedLaRemit" value="Yes">
+                        <label class="govuk-label govuk-radios__label" for="ReferralMadeOnBehalfOfLA">
+                            Yes, this referral is made on behalf of another LA/DA.
+                        </label>
+                    </div>
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="ReferralMadeByLA" type="radio" asp-for="SelectedLaRemit" value="No">
+                        <label class="govuk-label govuk-radios__label" for="ReferralMadeByLA">
+                            No, this referral is made by a Local Authority for its own administrative area.
+                        </label>
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+        </div>
+
+        <details class="govuk-details" data-module="govuk-details">
+
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Help with declarations made on behalf of other local authorities information
+                </span>
+            </summary>
+
+            <div class="govuk-details__text">
+                A local authority can add declarations for households not in its administrative area. This can happen in specific circumstances.<br><br>
+
+                An example of this is where one local authority gives some functions to another local authority where they are better placed to decide the eligibility of a household.<br><br>
+
+                In these situations, both local authorities must co-sign the Statement of Intent. This confirms which local authority is operating on behalf of the other. <br><br>
+
+                This also has to added to the local authority declaration notification template.
+            </div>
+
+        </details>
+
+        <div class="govuk-button-group">
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
+
+            <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+               asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+               asp-route-declarationId="@Model.DeclarationId">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+}

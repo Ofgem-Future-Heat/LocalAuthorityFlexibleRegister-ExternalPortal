@@ -1,0 +1,59 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model AddSoiConfirmation
+@{
+    ViewData["Title"] = "Statement of Intent Confirmation - LA Flex - Ofgem";
+}
+
+<br/>
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+
+    <div style="clear: both;" class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                New Statement of Intent added
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <h1 class="govuk-notification-banner__heading">
+                We'll now assess the new Statement of Intent version
+            </h1>
+        </div>
+    </div>
+
+    <h2 class="govuk-heading-xl">
+        Assessing the Statement of Intent
+    </h2>
+
+
+    <p class="govuk-body">
+        The Ofgem team will assess the new Statement of Intent. This involves reviewing the information you have provided and ensuring it matches the Statement of Intent as saved on the local authority website.
+
+    </p>
+    <p class="govuk-body">
+        We'll then recommend a status for this. This will be one of the following four statuses:
+    </p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>To be assessed</li>
+        <li>Passed assessment</li>
+        <li>Failed assessment</li>
+        <li>Withdrawn</li>
+    </ul>
+    <h3 class="govuk-heading-l">How we'll tell you about the status of the Statement of Intent</h3>
+
+    <p class="govuk-body">
+
+        When the assessment is finalised, you'll receive instructions on what to do next in the digital platform and by email. We'll send this to the email address you use to access the LA Flex digital platform.
+
+    </p>
+    <div class="govuk-button-group govuk-!-margin-top-8">
+        <a  asp-page="@LafPages.SoiSummaryView.ROUTE"
+            asp-page-handler="@LafPages.SoiSummaryView.METHOD_GET_BY_ID"
+            asp-route-statementOfIntentId=@Model.StatementOfIntentId
+            role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+            View Statement of Intent
+        </a>
+    </div>
+</main>

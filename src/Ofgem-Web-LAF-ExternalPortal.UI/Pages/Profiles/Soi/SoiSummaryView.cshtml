@@ -1,0 +1,157 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@using Ofgem.LAF.SharedLibrary.Enums
+@model SoiSummaryViewModel
+@{
+    ViewData["Title"] = "SOI Details - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" asp-page="@LafPages.SOIDashboard.ROUTE" class="govuk-back-link">Back</a>
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+
+
+
+    <h1 class="govuk-heading-l">
+        Statement of Intent summary
+
+    </h1>
+    <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">
+                @Model.StatementOfIntentModel?.LocalAuthority
+            </h2>
+
+        </div>
+        <div class="govuk-summary-card__content">
+            <dl class="govuk-summary-list">
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Version number
+                    </dt>
+
+                    <dt>
+                        @Model.StatementOfIntentModel?.VersionNumber
+                    </dt>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Date SOI was published
+                    </dt>
+
+                    <dt>
+                        @Model.StatementOfIntentModel?.DisplayCreatedDate
+                    </dt>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Status
+                    </dt>
+
+                    <dt>
+                        @await Html.PartialAsync("_StatementOfIntentStatus", (Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2)@Model.StatementOfIntentModel?.SoiStatus)
+                    </dt>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Link to SOI on local authority website
+                    </dt>
+
+                    <dt>
+                        <a href="@Model.StatementOfIntentModel?.SoiLink" target="_blank" class="govuk-link">@Model.StatementOfIntentModel?.SoiLink</a>
+                    </dt>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Local authorities covered
+                    </dt>
+
+                    @if (Model.StatementOfIntentModel?.SoiStatus != SoiStatusV2.ToBeAssessed)
+                    {
+                        <dt>
+
+                            @for (int index = 0; index < @Model.StatementOfIntentModel?.DesignatedLAs?.Count; index++)
+                            {
+                                @Model.StatementOfIntentModel?.DesignatedLAs[index].LocalAuthorityName
+
+                                @if (index < @Model.StatementOfIntentModel?.DesignatedLAs?.Count - 1)
+                                {
+                                    @(", ")
+                                }
+                            }
+                        </dt>
+                    }
+                    
+                    @if (Model.StatementOfIntentModel?.SoiStatus == SoiStatusV2.ToBeAssessed)
+                    {
+                        <dt>
+                            <i>To be confirmed</i>
+                        </dt>
+                    }
+                </div>
+            </dl>
+        </div>
+    </div>
+
+
+    @if (@Model.StatementOfIntentModel?.SoiStatus == Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.ToBeAssessed)
+    {
+        <h2 class="govuk-heading-l">Assessment result</h2>
+
+        <p class="govuk-body">The Statement of Intent is still to be assessed by the Ofgem team.</p>
+        <p class="govuk-body govuk-!-static-margin-bottom-8">Once this has been done, the results of this will be communicated with you here as well as via email.</p>
+    }
+
+    @if (@Model.StatementOfIntentModel?.SoiStatus == Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.FailedAssessment)
+    {
+        <h2 class="govuk-heading-l">Assessment result</h2>
+
+        <p class="govuk-body">The Statement of Intent has failed the internal assessment the Ofgem team conducts after you upload it to the system. </p>
+
+        <p class="govuk-body">It failed the assessment because of one or more of the following reasons: </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>
+                The Statement of Intent does not name the relevant local authority
+            </li>
+            <li>
+                The Statement of Intent is not published on the local authority website
+            </li>
+            <li>
+                The Statement of Intent does not indicate the scheme the local authority will administer
+            </li>
+            <li>
+                The Statement of Intent does not display a publish date
+            </li>
+        </ul>
+        <h3 class="govuk-heading-m">What you should do next</h3>
+        <p class="govuk-body">Create a new Statement of Intent and publish it on your website. Once published, add the Statement of Intent details via the digital platform. </p>
+        <p class="govuk-body govuk-!-static-margin-bottom-8">The results of the Statement of Intent assessment will be communicated with you here as well as via email. </p>
+
+        <a role="button" draggable="false" class="govuk-button" data-module="govuk-button" asp-page="@LafPages.AddSoi.ROUTE">
+            Add new Statement of Intent
+        </a>
+    }
+
+    @if (@Model.StatementOfIntentModel?.SoiStatus == Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.AwaitingSignOff)
+    {
+        <h2 class="govuk-heading-l">Assessment result</h2>
+
+        <p class="govuk-body">A senior member of the Ofgem team will now review the Statement of Intent and sign this new version off for use in the digital platform.</p>
+        <p class="govuk-body govuk-!-static-margin-bottom-8">The update to the status of the Statement of Intent will be communicated with you here as well as via e-mail. </p>
+    }
+
+    @if (@Model.StatementOfIntentModel?.SoiStatus == Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.PassedAssessment)
+    {
+        <h2 class="govuk-heading-l">Assessment result</h2>
+
+        <p class="govuk-body">The Statement of Intent has passed the internal assessment. </p>
+        <p class="govuk-body govuk-!-static-margin-bottom-8">There are no further actions to take for the local authority.</p>
+    }
+
+</main>

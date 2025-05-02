@@ -1,0 +1,146 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model ExternalUsersModel
+
+@{
+    ViewData["Title"] = "Manage external users - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.EXTERNALUSERS)" />
+
+<br />
+
+@if (Model.HasDisplayMessage)
+{
+    <div class="govuk-notification-banner" role="region"
+         aria-labelledby="govuk-notification-banner-title"
+         data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Information
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <p class="govuk-notification-banner__heading">@Model.DisplayMessage</p>
+        </div>
+    </div>
+}
+
+<h1 class="govuk-heading-l" id="list-external-users">Manage users</h1>
+
+<form method="POST">
+
+
+    <!-- Filter box -->
+    <div class="govuk-grid-row">
+
+        <!-- Results Area -->
+        <div id="tableBox" class="govuk-grid-column-three-quarters">
+
+
+            <div class="govuk-button-group">
+                <a data-test-id="AddExternalUserButton" class="govuk-button" data-module="govuk-button" asp-page="@LafPages.ExternalUserAdd.ROUTE">
+                    Add a new user
+                </a>
+            </div>
+
+
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+            <div class="moj-search">
+
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-label--s govuk-!-font-weight-bold" for="search-hint">
+                        Search users
+                    </label>
+
+                    <div id="search-hint" class="govuk-hint moj-search__hint ">
+                        Add users name to search for their user profile
+                    </div>
+
+                    <input asp-for="Filter.Filter"
+                           class="govuk-input moj-search__input" aria-describedby="search-hint"
+                           value="@(Model.Filter.Filter ?? string.Empty)">
+
+                </div>
+
+                <button asp-page-handler="@LafPages.ExternalUsers.METHOD_APPLY_FILTERS" type="submit" class="govuk-button moj-search__button " data-module="govuk-button">
+                    Search
+                </button>
+
+                <button asp-page-handler="@LafPages.ExternalUsers.METHOD_CLEAR_FILTERS"
+                        type="submit"
+                        class="govuk-button govuk-button--secondary moj-search__button "
+                        disabled="@string.IsNullOrEmpty(Model.Filter.Filter)">
+                    Clear
+                </button>
+
+                @if (!string.IsNullOrEmpty(Model.Filter.Filter))
+                {
+                    <div class="govuk-inset-text">
+                        @Model.ExternalUsers.Count results shown.
+                    </div>
+                }
+
+            </div>
+
+            <!-- Table -->
+            <table class="govuk-table la-flex-font-smaller" aria-label="External users information">
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">First name</th>
+                        <th scope="col" class="govuk-table__header">Last name</th>
+                        <th scope="col" class="govuk-table__header">Email address</th>
+                        <th scope="col" class="govuk-table__header">User Type</th>
+                        <th scope="col" class="govuk-table__header">Status</th>
+                        <th scope="col" class="govuk-table__header">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+
+                    @if (Model.ExternalUsers != null)
+                    {
+                        @foreach (var userDetail in Model.ExternalUsers)
+                        {
+                            <tr class="govuk-table__row">
+                                <td data-test-id="first-name-table-cell" class="govuk-table__cell">
+                                    @userDetail.FirstName
+                                </td>
+                                <td data-test-id="last-name-table-cell" class="govuk-table__cell">
+                                    @userDetail.LastName
+                                </td>
+                                <td data-test-id="email-address-table-cell" class="govuk-table__cell">
+                                    @userDetail.EmailAddress
+                                </td>
+                                <td data-test-id="user-type-table-cell" class="govuk-table__cell">
+                                    @userDetail.UserType.GetDescription()
+                                </td>
+                                <td data-test-id="status-table-cell" class="govuk-table__cell">
+
+                                    @await Html.PartialAsync("Shared/_ExternalUserStatus", userDetail)
+
+                                </td>
+                                <td data-test-id="view-cta-table-cell" class="govuk-table__cell">
+
+
+                                    <a data-test-id="ExternalUserLink_@userDetail.FirstName"
+                                       asp-page="@LafPages.ExternalUserView.ROUTE"
+                                       asp-route-userId="@userDetail.UserId">View</a>
+
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+            @await Html.PartialAsync("_Pagination", Model.Pagination)
+
+        </div>
+
+    </div>
+
+</form>

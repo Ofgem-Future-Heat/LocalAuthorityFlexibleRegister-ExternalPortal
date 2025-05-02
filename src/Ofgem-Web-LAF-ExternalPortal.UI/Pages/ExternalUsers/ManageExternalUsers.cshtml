@@ -1,0 +1,30 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.ExternalUsers.ManageExternalUserModel
+@{
+    ViewData["Title"] = "Manage external users - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.EXTERNALUSERS)" />
+
+<a data-test-id="BackButton" asp-page="@LafPages.LANDING" class="govuk-back-link">Back</a>
+
+
+<br />
+
+<form method="POST">
+
+    <div class="govuk-notification-banner" role="region"
+         aria-labelledby="govuk-notification-banner-title"
+         data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Information
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <p class="govuk-notification-banner__heading">Page is currently in development.</p>
+        </div>
+    </div>
+
+</form>

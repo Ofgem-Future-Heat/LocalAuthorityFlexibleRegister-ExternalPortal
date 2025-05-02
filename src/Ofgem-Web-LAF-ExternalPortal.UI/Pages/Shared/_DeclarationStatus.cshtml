@@ -1,0 +1,59 @@
+﻿@model Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus
+@{
+    switch (Model)
+    {
+        case Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus.FailedCoreChecks:
+
+            <strong class="govuk-tag laflex-tag--failedcorechecks"> Submission Errors </strong>
+            break;
+
+
+        case Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus.FailedSoiChecks:
+
+            <strong class="govuk-tag laflex-tag--failedsoichecks"> Submission Errors </strong>
+            break;
+
+
+        case Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus.AwaitingSignOff:
+
+            <strong class="govuk-tag govuk-!-static-margin-bottom-1"> SUBMITTED </strong>
+            break;
+
+
+        case Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus.Accepted:
+
+            <strong class="govuk-tag govuk-!-static-margin-bottom-1"> SUBMITTED </strong>
+            break;
+
+
+        case Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus.Rejected:
+
+            <strong class="govuk-tag laflex-tag--failedcorechecks"> Submission Errors </strong>
+            break;
+
+
+        case Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus.OnHold:
+
+            <strong class="govuk-tag laflex-tag--onhold"> On Hold </strong>
+            break;
+
+
+        case Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus.Withdrawn:
+
+            <strong class="govuk-tag laflex-tag--withdrawn"> SUBMITTED </strong>
+            break;
+
+
+        case Ofgem.LAF.SharedLibrary.Enums.DeclarationStatus.NotSet:
+
+            <strong class="govuk-tag laflex-tag--unknown"> Unknown </strong>
+            break;
+
+
+        default:
+
+            <strong class="govuk-tag laflex-tag--unknown"> Unknown </strong>
+            break;
+
+    }
+}

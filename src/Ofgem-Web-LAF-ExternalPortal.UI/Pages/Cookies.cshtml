@@ -1,0 +1,217 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model CookiesModel
+@{
+    ViewData["Title"] = "Cookie policy - LA Flex - Ofgem";
+
+    Layout = "_Layout_without_Navigation";
+}
+
+<br />
+
+<a href="#" onclick="window.history.go(-1); return false;" class="govuk-back-link  govuk-!-static-margin-top-1">Back</a>
+
+<br />
+<h1 class="govuk-heading-l">Local Authority Flexible Eligibility Cookie Policy</h1>
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @if (Model.AnalyticsCookie != "Unspecified")
+        {
+            <div class="govuk-notification-banner govuk-notification-banner--success bus--hidden" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Success
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        You’ve set your cookie preferences.
+                    </h3>
+                    <p>You can now close this browser tab. </p>
+                </div>
+            </div>
+        }
+
+
+        <p class="govuk-body">Cookies are small files saved on your phone, tablet or computer when you visit a website.</p>
+        <p class="govuk-body">We use cookies to make the Local Authority Flexible Eligibility (LA Flex)  digital service work and collect information about how you use our service.</p>
+
+        <h2 class="govuk-heading-m">Essential cookies</h2>
+        <p class="govuk-body">Essential cookies keep your information secure while you use the LA Flex digital service. We do not need to ask permission to use them.</p>
+
+        <table class="govuk-table" aria-label="Essential cookies table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Name</th>
+                    <th scope="col" class="govuk-table__header">Purpose</th>
+                    <th scope="col" class="govuk-table__header">Expires</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">.ExternalAspNetCore</td>
+                    <td class="govuk-table__cell">Stores technical and session-specific information, including user security roles.</td>
+                    <td class="govuk-table__cell">24 hours</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">.bus.ext.session</td>
+                    <td class="govuk-table__cell">Stores Azure Active Directory Business To Consumer (ADB2C) user login information and session data.</td>
+                    <td class="govuk-table__cell">14 days</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-admin</td>
+                    <td class="govuk-table__cell">Holds user membership data across tenants. The tenants a user is a member of and level of membership (admin or user).</td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-slice</td>
+                    <td class="govuk-table__cell">Used to route requests to the appropriate production instance.</td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-trans</td>
+                    <td class="govuk-table__cell">Used for tracking the transactions (number of authentication requests to Azure AD B2C) and the current transaction.</td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-sso:{Id}</td>
+                    <td class="govuk-table__cell">Used for maintaining the SSO session. </td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-cache:{id}_n</td>
+                    <td class="govuk-table__cell">Used for maintaining the request state.</td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-csrf</td>
+                    <td class="govuk-table__cell">Cross-Site Request Forgery token used for CRSF protection. </td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-dc</td>
+                    <td class="govuk-table__cell">Used for Azure AD B2C network routing.</td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-ctx</td>
+                    <td class="govuk-table__cell">Context</td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-rp</td>
+                    <td class="govuk-table__cell">Used for storing membership data for the resource provider tenant.</td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">x-ms-cpim-rc</td>
+                    <td class="govuk-table__cell">Used for storing the relay cookie.</td>
+                    <td class="govuk-table__cell">Session: When you close your web browser</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">cookies.essential</td>
+                    <td class="govuk-table__cell">Used for tracking whether or not a user has dismissed the cookie banner.</td>
+                    <td class="govuk-table__cell">365 days</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">cookies.analytics</td>
+                    <td class="govuk-table__cell">Used to track whether or not a user has opted into analytics.</td>
+                    <td class="govuk-table__cell">365 days</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="govuk-heading-m">Analytics cookies (optional)</h2>
+        <p class="govuk-body">With your permission, we use Google Analytics to collect data about how you use the LA Flex digital service. This information helps us to improve our service.</p>
+        <p class="govuk-body">Google is not allowed to use or share our analytics data with anyone.</p>
+        <p class="govuk-body">Google Analytics stores anonymised information about:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>how you got to the LA Flex digital service</li>
+            <li>the pages you visit on the LA Flex digital service and how long you spend on them</li>
+            <li>any errors you see while using the LA Flex digital service</li>
+        </ul>
+
+        <table class="govuk-table" aria-label="Analytics cookies table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Name</th>
+                    <th scope="col" class="govuk-table__header">Purpose</th>
+                    <th scope="col" class="govuk-table__header">Expires</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">_ga</td>
+                    <td class="govuk-table__cell">These help us count how many people visit the LA Flex digital service and other government digital services by tracking if you’ve visited before.</td>
+                    <td class="govuk-table__cell">2 years</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">_ga_&lt;container-id&gt;</td>
+                    <td class="govuk-table__cell">These help us identify and track an individual session on a user's device.</td>
+                    <td class="govuk-table__cell">2 years</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        <div class="govuk-form-group">
+            <form data-test-id="analytics-cookies-form" method="post" id="analytics-cookie-form">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                        <h3 class="govuk-fieldset__heading">
+                            Do you want to accept analytics cookies?
+                        </h3>
+                    </legend>
+                    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                        @foreach (var consent in Model.AnalyticsCookies)
+                        {
+                            <div class="govuk-radios__item">
+                                <input data-test-id="cookie-policy-input-@consent" class="govuk-radios__input" type="radio" id="analyticsCookie-@consent" asp-for="AnalyticsCookie" value="@consent">
+                                <label data-test-id="cookie-policy-label-@consent" class="govuk-label govuk-radios__label" for="analyticsCookie-@consent">
+                                    @consent
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <noscript>
+                        <style type="text/css">
+                            .rootDivClass {
+                                display: none;
+                            }
+                        </style>
+                    <div class="bus-js--hidden">
+                        <p class="govuk-body">
+                            We use JavaScript to set our analytics cookies. Unfortunately JavaScript is not running on your browser, so you cannot change your settings. You can try:
+                        </p>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>reloading the page</li>
+                            <li>turning on JavaScript in your browser</li>
+                        </ul>
+                    </div>
+                    </noscript>
+
+                </fieldset>
+            </form>
+            <br />
+            <div class="rootDivClass">
+
+            <button data-test-id="analytics-cookie-btn-submit" class="govuk-button" form="analytics-cookie-form" data-module="govuk-button" type="submit">Save cookie settings</button>
+        </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            checkCookie()
+        });
+    </script>
+}
+
+
+
+

@@ -1,0 +1,56 @@
+﻿@page
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model DeclarationDetailEditCompletedModel
+
+@{
+    ViewData["Title"] = "Declaration notification updated - LA Flex - Ofgem";
+}
+
+<div style="clear: both;" class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+            Declaration notification information changed
+        </h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+        <h3 class="govuk-notification-banner__heading">
+            For household @Model.Urn
+        </h3>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l">What happens next</h2>
+        <p class="govuk-body">
+            We'll continue carrying out the core checks of the file. 
+        </p>
+        
+        <h2 class="govuk-heading-m">Making further changes </h2>
+        <p class="govuk-body">
+            You can still make further changes to this declaration notification if you need to. You can do this following the same steps you have for making this update.</p>
+
+        <h2 class="govuk-heading-m">How we'll let you know about the status of the file </h2>
+        <p class="govuk-body">
+            We'll email you an update about the file. This will be sent to the email address you've used to create an LA Flex user profile with us.</p>
+        <p class="govuk-body">
+            You can also view all latest declaration notification file uploads on the homepage.</p>
+    </div>
+</div>
+
+
+<div class="govuk-button-group govuk-!-static-margin-top-9">
+
+    @if (Model.HasDeclarationId)
+    {
+        <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+           asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+           asp-route-declarationId="@Model.DeclarationId"
+           data-test-id="ShowDeclarationButton"
+           class="govuk-button">View updated declaration notification</a>
+    }
+
+</div>
+

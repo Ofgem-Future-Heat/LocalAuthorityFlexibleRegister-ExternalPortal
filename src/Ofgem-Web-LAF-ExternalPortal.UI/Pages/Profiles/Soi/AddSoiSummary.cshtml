@@ -1,0 +1,109 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model AddSoiSummary
+@{
+    ViewData["Title"] = "Check your answer before sending new SOI – Local Authority Flexible Eligibility";
+}
+
+@if (Model.HasDisplayMessage)
+{
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+            <h2 data-test-id="CoreCheckText" class="govuk-error-summary__title">
+                Error:
+            </h2>
+            <div class="govuk-error-summary__body">
+                <p class="govuk-notification-banner__heading">@Model.DisplayMessage</p>
+            </div>
+        </div>
+    </div>
+}
+
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <form method="POST">
+
+        <input asp-for="OnsCode" type="hidden" />
+
+        <h1 class="govuk-heading-l">
+            Check your answers before sending new Statement of Intent
+        </h1>
+
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds-from-desktop">
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Version number
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.SoiVersion
+                        </dd>
+
+                        <dd class="govuk-summary-list__actions">
+
+                            <a class="govuk-link laflex-action" aria-label="Change version number"
+                               asp-page="@LafPages.VersionNumberView.ROUTE">
+                                Change
+                                <span class="govuk-visually-hidden">Change SOI version number</span>
+                            </a>
+
+                        </dd>
+                    </div>
+
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Date published
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @Model.DatePublished.ToString("dd/MM/yyyy")
+                        </dd>
+
+                        <dd class="govuk-summary-list__actions">
+
+                            <a class="govuk-link laflex-action" aria-label="Change published date"
+                               asp-page="@LafPages.DatePublishedView.ROUTE">
+                                Change
+                                <span class="govuk-visually-hidden">Change SOI published date</span>
+                            </a>
+
+                        </dd>
+                    </div>
+
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Link to Statement of Intent on local authority website
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <a href="@Model.SoiLink">@Model.SoiLink</a>
+                        </dd>
+
+                        <dd class="govuk-summary-list__actions">
+
+                            <a class="govuk-link laflex-action" aria-label="Change link"
+                               asp-page="@LafPages.LinkView.ROUTE">
+                                Change
+                                <span class="govuk-visually-hidden">Change SOI link</span>
+                            </a>
+
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <div class="govuk-button-group  govuk-!-margin-top-8">
+
+            <button data-test-id="CreateSoiButton" type="submit" class="govuk-button" data-module="govuk-button"
+                    asp-page="@LafPages.AddSoiSummary.ROUTE"
+                    asp-page-handler="@LafPages.AddSoiSummary.METHOD_ADD">
+                Confirm and send
+            </button>
+
+
+            <a class="govuk-link" asp-page="@LafPages.SOIDashboard.ROUTE">Cancel</a>
+        </div>
+
+    </form>
+</main>

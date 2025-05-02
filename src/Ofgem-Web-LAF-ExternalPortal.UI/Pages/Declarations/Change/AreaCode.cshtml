@@ -1,0 +1,81 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model AreaCodeModel
+
+@{
+    ViewData["Title"] = "Local authority area code - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" class="govuk-back-link"
+   asp-page="@LafPages.DeclarationDetail.ROUTE"
+   asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+   asp-route-declarationId="@Model.DeclarationId">Back</a>
+
+
+@if (Model != null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        @await Html.PartialAsync("Shared/_ChangeErrors", Model.DisplayMessage)
+    }
+
+    <form method="POST">
+
+        <input type="hidden" asp-for="DeclarationId" />
+        <input type="hidden" asp-for="Urn" />
+        <input type="hidden" asp-for="AllowedLaDetails" />
+
+        <span class="govuk-caption-l">Change declaration details for @Model.Urn</span>
+
+        <div class="govuk-form-group">
+
+            <h1 class="govuk-label-wrapper">
+                <label class="govuk-label govuk-label--l" for="SelectedLa">
+                    What is the local authority area code of the household?
+                </label>
+            </h1>
+
+            <div id="account-number-hint" class="govuk-hint">
+                This is a 9-digit Office for National Statistics (ONS) code. The first digit of the code should be a letter that identifies the local authority followed by 8 numbers. For example, the code for Liverpool is E08000012.
+            </div>
+
+            <input asp-for="SelectedLa" id="SelectedLa" name="SelectedLa" class="govuk-input govuk-input--width-10" type="text" spellcheck="false" aria-describedby="account-number-hint">
+
+        </div>
+
+        <details class="govuk-details">
+
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Help with the local authority area code
+                </span>
+            </summary>
+
+            <div class="govuk-details__text">
+                <p>
+                    Each local authority has a 9-digit Office for National Statistics (ONS) code. This code starts with a letter that identifies the local authority submitting the declaration. And is followed by 8 numbers. For example, the ONS code for Liverpool is E08000012.
+                </p>
+                <p>
+                    The local authority area codes are available on the Office for National Statistics website at: <a href="https://www.ons.gov.uk/methodology/geography/geographicalproducts/namescodesandlookups" target="_blank" rel="noopener"> codes and lookups - Office for National Statistics (ons.gov.uk - opens in new window).</a>
+                </p>
+            </div>
+
+        </details>
+
+        <div class="govuk-button-group">
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
+
+            <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+               asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+               asp-route-declarationId="@Model.DeclarationId">
+                Cancel
+            </a>
+
+        </div>
+    </form>
+}

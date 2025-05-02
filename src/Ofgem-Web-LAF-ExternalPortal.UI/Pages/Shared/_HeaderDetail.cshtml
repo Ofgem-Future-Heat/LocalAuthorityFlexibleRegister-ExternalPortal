@@ -1,0 +1,28 @@
+﻿@model Ofgem_Web_LAF_ExternalPortal.Models.ExternalUserModel
+
+
+<div class="grid-container">
+    <div class="govuk-header__logo">
+
+        <img class="companyLogo" data-tenant-branding-logo="true" src="https://ukspk8sprdb2csa.blob.core.windows.net/prduserflowtemplates/logo-with-strapline.png" alt="Ofgem Logo" style="max-width: 278px;">
+
+    </div>
+    <div class="govuk-header__content govuk-!-margin-top-3">
+
+        <a href="\" class="govuk-heading-m laflex-service-link"> 
+            Local Authority Flexible Eligibility  
+        </a>
+
+        <ul class="laflex-login-nav">
+            <li>
+                <a class="govuk-link signout" href="https://home.account.gov.uk/settings">@Model.FirstName&nbsp;@Model.LastName</a>
+                <span style="color: black;"aria-hidden="true"> | </span>
+            </li>
+
+            <li>
+                <a class="govuk-link signout" href="\sign-out">Sign out</a>
+            </li>
+        </ul>
+
+    </div>
+</div>

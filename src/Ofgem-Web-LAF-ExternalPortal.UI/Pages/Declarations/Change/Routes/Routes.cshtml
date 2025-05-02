@@ -1,0 +1,117 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model RoutesModel
+
+@{
+    ViewData["Title"] = "Referral route - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" class="govuk-back-link"
+   asp-page="@LafPages.DeclarationDetail.ROUTE"
+   asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+   asp-route-declarationId="@Model.DeclarationId">Back</a>
+
+
+@if (Model != null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        @await Html.PartialAsync("Shared/_ChangeErrors", Model.DisplayMessage)
+    }
+
+    <form method="POST">
+
+        <input type="hidden" asp-for="DeclarationId" />
+        <input type="hidden" asp-for="Urn" />
+
+        <span class="govuk-caption-l">Change declaration details for @Model.Urn</span>
+
+
+        <div class="govuk-form-group">
+
+            <fieldset class="govuk-fieldset">
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+
+                    <h1 class="govuk-fieldset__heading">
+                        What route is the local or devolved authority referring this household under?
+                    </h1>
+
+                </legend>
+
+
+                <div class="govuk-radios" data-module="govuk-radios">
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" asp-for="SelectedRoute" id="route1" type="radio" value="@Constants.Route1Text" aria-describedby="route1-hint" />
+                        <label class="govuk-label govuk-radios__label" for="route1">
+                            @Routes.Route1
+                        </label>
+
+                        <div id="route1-hint" class="govuk-hint govuk-radios__hint">
+                            Households in band D, E, F and G with a gross income of less than £31,000.
+                        </div>
+
+                    </div>
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" asp-for="SelectedRoute" id="route2" type="radio" value="@Constants.Route2Text" aria-describedby="route2-hint" />
+                        <label class="govuk-label govuk-radios__label" for="route2">
+                            @Routes.Route2
+                        </label>
+
+                        <div id="route2-hint" class="govuk-hint govuk-radios__hint">
+                            Households in band E, F, and G that meet a combination of two proxies.
+                        </div>
+
+                    </div>
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" asp-for="SelectedRoute" id="route3" type="radio" value="@Constants.Route3Text" aria-describedby="route3-hint" />
+                        <label class="govuk-label govuk-radios__label" for="route3">
+                            @Routes.Route3 
+                        </label>
+
+                        <div id="route3-hint" class="govuk-hint govuk-radios__hint">
+                            You’ll have a user ID if you’ve registered for Self Assessment or filed a tax return online before.
+                        </div>
+
+                    </div>
+
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" asp-for="SelectedRoute" id="route4" type="radio" value="@Constants.Route4Text" aria-describedby="route4-hint" />
+                        <label class="govuk-label govuk-radios__label" for="route4">
+                            @Routes.Route4
+                        </label>
+
+                        <div id="route4-hint" class="govuk-hint govuk-radios__hint">
+                            Suppliers and LAs can submit a proposal for a new route to identify low income and vulnerable households.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+        </div>
+
+        <div class="govuk-button-group  govuk-!-margin-top-8">
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
+
+            <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+               asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+               asp-route-declarationId="@Model.DeclarationId">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+}

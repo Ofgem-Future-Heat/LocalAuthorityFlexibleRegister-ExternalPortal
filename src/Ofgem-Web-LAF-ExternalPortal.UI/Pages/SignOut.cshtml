@@ -1,0 +1,26 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model             SignOutModel
+@{
+    ViewData["Title"] = "Signed Out";
+
+    Layout = "_Layout_for_SignOut";
+
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds ">
+        <input type="hidden" name="_csrf" value="OrvybYly-mXzFfompX9Z-uYajBSEdXGkHeFc">
+        <h1 data-test-id="sign-out-header" class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">You have signed out</h1>
+        <p class="govuk-body" data-test-id="sign-out-paragraph-confirmation">
+            You are now signed out of the LA Flex External Scheme.
+        </p>
+        <p class="govuk-body" data-test-id="sign-out-paragraph-sign-back-in">
+            You can return to <a href="https://www.gov.uk/" class="govuk-link">GOV.UK homepage</a> or sign back into the portal.
+        </p>
+        <p>
+            <a asp-page="@LafPages.LANDING" class="govuk-button" data-module="govuk-button">Sign in</a>
+        </p>
+    </div>
+</div>

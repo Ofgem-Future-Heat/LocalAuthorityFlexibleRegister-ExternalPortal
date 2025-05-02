@@ -1,0 +1,127 @@
+﻿@page
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model AddExternalUserModel
+
+@{
+    ViewData["Title"] = "Add new external user - LA Flex - Ofgem";
+}
+
+<a asp-page="@LafPages.ExternalUsers.ROUTE" class="govuk-back-link">Back</a>
+
+<!-- Error summary  -->
+@if (Model.HasMessage)
+{
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+            <h2 class="govuk-error-summary__title">
+                There is a problem
+            </h2>
+            <div class="govuk-error-summary__body">
+                <ul data-test-id="ErrorList" class="govuk-list govuk-error-summary__list laflex-error-list">
+                    @foreach (var error in Model.Errors)
+                    {
+                        <li>
+                            <a href="#@error.Id">@error.Message</a>
+                        </li>
+                    }
+                </ul>
+                <br />
+            </div>
+        </div>
+    </div>
+}
+
+<h1 class="govuk-heading-l" id="add-ExternalUser">Add a new user</h1>
+
+<form method="POST">
+    <main class="govuk-main-wrapper " id="add-ExternalUser-main-content" role="main">
+
+        <div class="govuk-form-group @(Model.ErrorFirstname ? "govuk-form-group--error" : "")">
+            <label class="govuk-label govuk-label--s" for="ExternalUser_FirstName">
+                First name
+            </label>
+            
+            @if (@Model.ErrorFirstname)
+            {
+                <p id="ExternalUser_FirstName-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @Model.Errors.FirstOrDefault(f => f.Id == "ExternalUser_FirstName").Message
+                </p>
+            }
+
+            <input class="govuk-input govuk-!-width-one-half"
+                   id="ExternalUser_FirstName"
+                   type="text"
+                   asp-for="ExternalUser.FirstName"
+                   data-test-id="first-name-table-cell" />
+        </div>
+        <div class="govuk-form-group @(Model.ErrorLastname ? "govuk-form-group--error" : "")">
+            <label class="govuk-label govuk-label--s" for="ExternalUser_LastName">
+                Last name
+            </label>
+            
+            @if (@Model.ErrorLastname)
+            {
+                <p id="ExternalUser_LastName-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @Model.Errors.FirstOrDefault(f => f.Id == "ExternalUser_LastName").Message
+                </p>
+            }
+
+            <input class="govuk-input govuk-!-width-one-half"
+                   id="ExternalUser_LastName"
+                   type="text"
+                   asp-for="ExternalUser.LastName"
+                   data-test-id="last-name-table-cell" />
+        </div>
+        <div class="govuk-form-group @(Model.ErrorEmail ? "govuk-form-group--error" : "")">
+            <label class="govuk-label govuk-label--s" for="ExternalUser_EmailAddress">
+                Email address
+            </label>
+            
+            @if (@Model.ErrorEmail)
+            {
+                <p id="ExternalUser_EmailAddress-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @Model.Errors.FirstOrDefault(f => f.Id == "ExternalUser_EmailAddress").Message
+                </p>
+            }
+
+            <input class="govuk-input govuk-!-width-one-half"
+                   id="ExternalUser_EmailAddress"
+                   type="text"
+                   asp-for="ExternalUser.EmailAddress"
+                   data-test-id="email-address-table-cell" />
+        </div>
+
+        <div class="govuk-form-group @(Model.ErrorExternalUserType ? "govuk-form-group--error" : "")">
+            <label class="govuk-label" for="user-types">
+                User type
+            </label>
+            
+            @if (@Model.ErrorExternalUserType)
+            {
+                <p id="user-types-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @Model.Errors.FirstOrDefault(f => f.Id == "SelectedUserType").Message
+                </p>
+            }
+
+            <select id="user-types"
+                    class="govuk-select" style="min-width: 75px!important;"
+                    name="SelectedUserType"
+                    asp-items="Model.UserTypes"
+                    data-test-id="user-type-table-cell">
+            </select>
+
+        </div>
+
+        <div class="govuk-button-group  govuk-!-static-margin-top-9">
+
+            <button class="govuk-button" data-module="govuk-button" type="submit"
+                    asp-page-handler="@LafPages.ExternalUserAdd.METHOD_SAVE">
+                Add user
+            </button>
+
+
+            <a asp-page="@LafPages.ExternalUsers.ROUTE" class="govuk-link">Cancel</a>
+        </div>
+    </main>
+</form>

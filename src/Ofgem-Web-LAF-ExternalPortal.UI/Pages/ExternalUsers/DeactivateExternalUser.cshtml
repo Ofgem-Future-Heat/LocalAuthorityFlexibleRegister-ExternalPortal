@@ -1,0 +1,115 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model DeactivateExternalUserModel
+
+@{
+    ViewData["Title"] = "Deactivate user profile - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" asp-page="@LafPages.ExternalUsers.ROUTE" class="govuk-back-link">Back</a>
+
+<br />
+
+@if (Model.ShowNotification)
+{
+    <div class="govuk-notification-banner" role="region"
+         aria-labelledby="govuk-notification-banner-title"
+         data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Information
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            @if (Model.HasDisplayMessage)
+            {
+                <p class="govuk-notification-banner__heading">@Model.DisplayMessage</p>
+            }
+        </div>
+    </div>
+}
+
+<h1 class="govuk-heading-l">
+    Do you want to deactivate this user?
+</h1>
+
+<p>
+    The user will no longer have access to the Local Authority Flexible Eligibility portal if you deactivate their user profile.
+</p>
+
+<form method="POST">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    First name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.FirstName
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Last name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.LastName
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.EmailAddress
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    User type
+                </dt>
+
+                <dd class="govuk-summary-list__value">
+                    @Model.UserType.GetDescription()
+                </dd>
+                
+            </div>
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Status
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    Inactive
+                </dd>
+            </div>
+
+        </dl>
+
+        <div class="govuk-button-group  govuk-!-static-margin-top-9">
+
+            <button class="govuk-button" data-module="govuk-button" type="submit"
+                    asp-page="@LafPages.ExternalUserDelete.ROUTE"
+                    asp-page-handler="@LafPages.ExternalUserDelete.METHOD_DEACTIVATE"
+                    asp-route-userId="@Model.UserId">
+                Confirm
+            </button>
+
+            <div class="govuk-button-group">
+                <a class="govuk-link"
+                   draggable="false"
+                   data-module="govuk-button"
+                   asp-page="@LafPages.ExternalUserView.ROUTE"
+                   asp-route-userId="@Model.UserId">
+                    Cancel
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+</form>

@@ -1,0 +1,80 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model LaConsultedPriorToInstallationModel
+
+@{
+    ViewData["Title"] = "Local authority consultation - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" class="govuk-back-link"
+   asp-page="@LafPages.DeclarationDetail.ROUTE"
+   asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+   asp-route-declarationId="@Model.DeclarationId">Back</a>
+
+
+@if (Model != null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        @await Html.PartialAsync("Shared/_ChangeErrors", Model.DisplayMessage)
+    }
+
+    <form method="POST">
+
+        <input type="hidden" asp-for="DeclarationId" />
+        <input type="hidden" asp-for="Urn" />
+
+        <span class="govuk-caption-l">Change declaration details for @Model.Urn</span>
+
+        <div class="govuk-form-group">
+
+            <fieldset class="govuk-fieldset">
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+
+                    <h1 class="govuk-fieldset__heading">
+                        Was the local authority consulted prior to the installation?
+                    </h1>
+
+                </legend>
+
+                <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="ConsultedYes" type="radio" asp-for="Consulted" value="Yes">
+                        <label class="govuk-label govuk-radios__label" for="ConsultedYes">
+                            Yes
+                        </label>
+                    </div>
+
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input" id="ConsultedNo" type="radio" asp-for="Consulted" value="No">
+                        <label class="govuk-label govuk-radios__label" for="ConsultedNo">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+        </div>
+
+        <div class="govuk-button-group">
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
+
+            <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+               asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+               asp-route-declarationId="@Model.DeclarationId">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+}

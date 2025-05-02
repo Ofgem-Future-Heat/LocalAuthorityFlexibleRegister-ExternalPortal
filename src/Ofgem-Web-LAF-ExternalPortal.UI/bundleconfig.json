@@ -1,0 +1,22 @@
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css",
+      "wwwroot/css/Header.css",
+      "wwwroot/css/Navigation.css",
+      "wwwroot/css/Links.css",
+      "wwwroot/css/Messages.css",
+      "wwwroot/css/Tags.css",
+      "wwwroot/css/Button.css",
+      "wwwroot/css/Table.css",
+      "wwwroot/css/Banner.css",
+      "wwwroot/css/Error.css",
+      "wwwroot/css/Paragraph.css",
+      "wwwroot/css/Watermark.css",
+      "wwwroot/css/FontFamily.css",
+      "wwwroot/css/BackLink.css",
+      "wwwroot/css/Input.css"
+    ]
+  }
+]

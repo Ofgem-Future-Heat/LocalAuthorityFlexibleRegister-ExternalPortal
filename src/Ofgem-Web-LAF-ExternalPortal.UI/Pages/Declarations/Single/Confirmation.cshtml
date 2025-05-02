@@ -1,0 +1,81 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.Single.Confirmation
+@{
+    ViewData["Title"] = "Check Answers - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SEND_DECLARATIONS)" />
+
+@if (Model is not null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        <div style="clear: both;border: 5px solid #D4351C; background-color: #D4351C;" class="govuk-notification-banner  govuk-!-width-two-thirds" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                    Declaration notification has been saved with submission errors
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <h1 class="govuk-notification-banner__heading">
+                    Unique reference number @Model.UrnNumber
+                </h1>
+            </div>
+        </div>
+
+        <h2 class="govuk-heading-l">What happens next</h2>
+
+        <p class="govuk-body">
+            Your declaration will be added to your <a class="govuk-link govuk-link--no-visited-state" id="@(LafPageMenus.DASHBOARD)" href="@LafPages.Dashboard.ROUTE">existing declarations</a>. Its status will be set to <strong>"Submitted"</strong> while further checks are carried out by the Ofgem team.
+        </p>
+
+        <h3 class="govuk-heading-m">Have more than one declaration to send?</h3>
+
+        <p class="govuk-body">
+            You can send an additional declaration by selecting the option below.
+        </p>
+
+        <div class="govuk-button-group govuk-!-margin-top-8">
+            <a href="@LafPages.SendDeclaration.ROUTE" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                Send another declaration
+            </a>
+        </div>
+    }
+    else
+    {
+        <br>
+        <br>
+        <!-- Confirmation message -->
+        <div class="govuk-panel govuk-!-width-two-thirds govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Declaration submitted
+            </h1>
+            <div class="govuk-panel__body">
+                Your reference number<br><strong>@Model.UrnNumber</strong>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="govuk-!-width-two-thirds">
+            <!-- Information about next steps -->
+            <h2 class="govuk-heading-l">What happens next</h2>
+            <p class="govuk-body">
+                Your declaration will be added to your <a class="govuk-link govuk-link--no-visited-state" id="@(LafPageMenus.DASHBOARD)" href="@LafPages.Dashboard.ROUTE">existing declarations</a>. Its status will be set to <strong>"Submitted"</strong> while further checks are carried out by the Ofgem team.
+            </p>
+            <!-- Option to send another declaration -->
+            <h3 class="govuk-heading-m">Have more than one declaration to send?</h3>
+            <p class="govuk-body">
+                You can send an additional declaration by selecting the option below.
+            </p>
+            <div class="govuk-button-group govuk-!-margin-top-8">
+                <a href="@LafPages.SendDeclaration.ROUTE" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+                    Send another declaration
+                </a>
+            </div>
+        </div>
+    }
+}

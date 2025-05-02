@@ -1,0 +1,36 @@
+﻿@model Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2
+@{
+    switch (Model)
+    {
+        case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.FailedAssessment:
+
+            <strong class="govuk-tag laflex-tag--failedsoichecks"> FAILED ASSESSMENT </strong>
+            break;
+
+        case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.ToBeAssessed:
+
+            <strong class="govuk-tag govuk-tag--blue"> TO BE ASSESSED </strong>
+            break;
+
+        case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.PassedAssessment:
+
+            <strong class="govuk-tag laflex-tag--accepted"> PASSED ASSESSMENT </strong>
+            break;
+
+        case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.AwaitingSignOff:
+
+            <strong class="govuk-tag laflex-tag--awaitingsignoff"> AWAITING SIGN-OFF </strong>
+            break;
+
+        case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.Withdrawn:
+
+            <strong class="govuk-tag laflex-tag--withdrawn"> WITHDRAWN </strong>
+            break;
+
+        default:
+
+            <strong class="govuk-tag laflex-tag--unknown"> Unknown </strong>
+            break;
+
+    }
+}

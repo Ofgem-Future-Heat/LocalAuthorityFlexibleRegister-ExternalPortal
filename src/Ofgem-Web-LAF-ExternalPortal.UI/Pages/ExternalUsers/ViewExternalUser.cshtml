@@ -1,0 +1,134 @@
+﻿@page
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@using Ofgem.LAF.SharedLibrary.Enums
+@model ViewExternalUserModel
+
+@{
+    ViewData["Title"] = "Manage external user profile - LA Flex - Ofgem";
+}
+
+<a asp-page="@LafPages.ExternalUsers.ROUTE" class="govuk-back-link">Back</a>
+
+@if (Model.HasMessage)
+{
+    <div class="govuk-notification-banner" role="region"
+         aria-labelledby="govuk-notification-banner-title"
+         data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Information
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <p data-test-id="" class="govuk-notification-banner__heading">
+                @Model.Message
+            </p>
+        </div>
+    </div>
+}
+
+<h1 class="govuk-heading-l" id="add-ExternalUser">External user details</h1>
+
+<form method="POST">
+    <main class="govuk-main-wrapper " id="add-ExternalUser-main-content" role="main">
+
+
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    First name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.ExternalUser.FirstName
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Last name
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.ExternalUser.LastName
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Email address
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.ExternalUser.EmailAddress
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    User type
+                </dt>
+                <dd class="govuk-summary-list__value">
+                    @Model.ExternalUser.UserType.GetDescription()
+                </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Status
+                </dt>
+                <dd class="govuk-summary-list__value">
+
+                    @await Html.PartialAsync("Shared/_ExternalUserStatus", Model.ExternalUser)
+
+                </dd>
+            </div>
+
+        </dl>
+
+        <div class="govuk-button-group  govuk-!-static-margin-top-9">
+
+            @if (!Model.ExternalUser.IsDeleted)
+            {
+                <a class="govuk-button" data-module="govuk-button"
+                   data-test-id="ExternalUserLink_CanEdit"
+                   asp-page="@LafPages.ExternalUserEdit.ROUTE"
+                   asp-page-handler="@LafPages.ExternalUserEdit.METHOD_GET_BY_ID"
+                   asp-route-userId="@Model.ExternalUser.UserId">Edit user details</a>
+            }
+
+            @if (Model.ExternalUser is { IsDeleted: false })
+            {
+                <a class="govuk-button govuk-button--warning" data-module="govuk-button"
+                   data-test-id="ExternalUserLink_CanDeactivate"
+                   asp-page="@LafPages.ExternalUserDelete.ROUTE"
+                   asp-page-handler="@LafPages.ExternalUserDelete.METHOD_GET_BY_ID"
+                   asp-route-userId="@Model.ExternalUser.UserId"
+                   asp-route-firstName="@Model.ExternalUser.FirstName"
+                   asp-route-lastName="@Model.ExternalUser.LastName"
+                   asp-route-emailAddress="@Model.ExternalUser.EmailAddress"
+                   asp-route-userType="@Model.ExternalUser.UserType"
+                   asp-route-homeBaseLocalAuthority="@Model.HomeBaseLocalAuthority">Deactivate user</a>
+            }
+
+            @if (Model.ExternalUser is { IsDeleted: true })
+            {
+                if (Model.ExternalUser.UserType == ExternalUserType.DesignatedAuthorisedSignatory)
+                {
+                    <div class="govuk-inset-text">
+                        <strong>User type:</strong> The user type will be set to "Responsible Local Authority Officer" instead of "Dedicated Authorised Signatory" when reactivating this user profile. This is because two users at the same organisation cannot be set as a "Dedicated Authorised Signatory" user.
+                    </div>
+                }
+
+
+                <a class="govuk-button govuk-button--warning" data-module="govuk-button"
+                   data-test-id="ExternalUserLink_CanReactivate"
+                   asp-page="@LafPages.ExternalUserReactivate.ROUTE"
+                   asp-page-handler="@LafPages.ExternalUserReactivate.METHOD_GET_BY_ID"
+                   asp-route-userId="@Model.ExternalUser.UserId"
+                   asp-route-firstName="@Model.ExternalUser.FirstName"
+                   asp-route-lastName="@Model.ExternalUser.LastName"
+                   asp-route-emailAddress="@Model.ExternalUser.EmailAddress"
+                   asp-route-userType="@Model.ExternalUser.UserType"
+                   asp-route-homeBaseLocalAuthority="@Model.HomeBaseLocalAuthority">Reactivate user</a>
+            }
+
+            <a asp-page="@LafPages.ExternalUsers.ROUTE" class="govuk-link">Cancel</a>
+        </div>
+    </main>
+</form>

@@ -1,0 +1,176 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.Single.CheckAnswers
+@{
+    ViewData["Title"] = "Check Answers - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SEND_DECLARATIONS)" />
+
+<a data-test-id="BackButton" asp-page="@LafPages.WasLocalAuthorityConsulted.ROUTE" class="govuk-back-link">Back</a>
+
+
+<!-- Error summary  -->
+@if (Model.HasError)
+{
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+            <h2 class="govuk-error-summary__title">
+                There is a problem
+            </h2>
+            <div class="govuk-error-summary__body">
+                <ul data-test-id="ErrorList" class="govuk-list govuk-error-summary__list laflex-error-list">
+                    <li>
+                        <a href="#@Model.ErrorId"> @Model.DisplayMessage</a>
+                    </li>
+                </ul>
+                <br />
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.SingleDeclarationJourney is not null)
+{
+    <span class="govuk-caption-l">Create a single declaration notification</span>
+    <h1 class="govuk-heading-l">Check your answers before sending declaration</h1>
+
+    <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Local authority selected
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.SingleDeclarationJourney.OnsCodeDetails
+            </dd>
+
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page="@LafPages.SelectLocalAuthority.ROUTE">
+                        Change<span class="govuk-visually-hidden"> Select the local authority that is submitting the declaration notification</span>
+                    </a>
+                </dd>
+            </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Statement of Intent being used
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.SingleDeclarationJourney.StatementOfIntentDetails
+            </dd>
+
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page="@LafPages.SelectStatementOfIntent.ROUTE">
+                        Change<span class="govuk-visually-hidden"> Change Statement of Intent being used</span>
+                    </a>
+                </dd>
+            </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Declaration unique reference number (URN)
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.SingleDeclarationJourney.UrnNumber
+            </dd>
+
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page="@LafPages.UniqueReferenceNumber.ROUTE">
+                        Change<span class="govuk-visually-hidden"> Change Declaration unique reference number (URN)</span>
+                    </a>
+                </dd>
+            </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Local authority area code of household
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.SingleDeclarationJourney.HouseholdOnsCodeDetails
+            </dd>
+
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page="@LafPages.LocalAuthorityHouseholder.ROUTE">
+                        Change<span class="govuk-visually-hidden"> Change Local authority area code of household</span>
+                    </a>
+                </dd>
+            </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Route the household is referred under
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.SingleDeclarationJourney.RouteDetail
+            </dd>
+
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page="@LafPages.SelectReferralRoute.ROUTE">
+                        Change<span class="govuk-visually-hidden"> Change Referral on behalf of another local or devolved authority</span>
+                    </a>
+                </dd>
+            </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Address of household
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.SingleDeclarationJourney.FullAddress
+            </dd>
+
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page="@LafPages.AddressDetails.ROUTE">
+                        Change<span class="govuk-visually-hidden"> Change Address of household</span>
+                    </a>
+                </dd>
+            </div>
+
+
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Date household became eligible
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.SingleDeclarationJourney.DateOfHouseholderEligibility
+            </dd>
+
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page="@LafPages.HouseholdEligibility.ROUTE">
+                        Change<span class="govuk-visually-hidden"> Date household became eligible</span>
+                    </a>
+                </dd>
+            </div>
+
+
+
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                Local authority consulted prior to the installation
+            </dt>
+            <dd class="govuk-summary-list__value">
+                @Model.SingleDeclarationJourney.WasLocalAuthorityConsultedPriorToInstallation
+            </dd>
+
+                <dd class="govuk-summary-list__actions">
+                    <a asp-page="@LafPages.WasLocalAuthorityConsulted.ROUTE">
+                        Change<span class="govuk-visually-hidden"> Change Local authority consulted prior to the installation</span>
+                    </a>
+                </dd>
+            </div>
+        </dl>
+
+    <form method="POST">
+        <div class="govuk-button-group govuk-!-margin-top-8">
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Submit declaration
+            </button>
+
+            <a class="govuk-link" asp-page="@LafPages.SendDeclaration.ROUTE">
+                Cancel
+            </a>
+        </div>
+    </form>
+}

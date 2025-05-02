@@ -1,0 +1,103 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.Single.UniqueReferenceNumber
+@{
+    ViewData["Title"] = "Declaration unique reference number - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SEND_DECLARATIONS)" />
+
+
+<a data-test-id="BackButton" asp-page="@LafPages.SelectStatementOfIntent.ROUTE" class="govuk-back-link">Back</a>
+
+<!-- Error summary  -->
+@if (Model.HasError)
+{
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+            <h2 class="govuk-error-summary__title">
+                There is a problem
+            </h2>
+            <div class="govuk-error-summary__body">
+                <ul data-test-id="ErrorList" class="govuk-list govuk-error-summary__list laflex-error-list">
+                    <li>
+                        <a href="#@Model.ErrorId"> @Model.DisplayMessage</a>
+                    </li>
+                </ul>
+                <br />
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.SingleDeclarationJourney is not null)
+{
+    <form method="POST">
+
+        <input type="hidden" asp-for="SelectedLa" />
+
+        <span class="govuk-caption-l">Create a single declaration notification</span>
+
+        <div class="govuk-form-group @(Model.HasError ? "govuk-form-group--error" : "")">
+            <fieldset class="govuk-fieldset" role="group" aria-describedby="">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        Declaration unique reference number (URN)
+                    </h1>
+                </legend>
+                <div id="urn-number-hint" class="govuk-hint govuk-!-margin-bottom-5">
+                    <p class="govuk-hint ">Enter the URN in the following format:</p>
+                    <ol>
+                        <li>9-digit Office for National Statistics (ONS). For example, the ONS code for Liverpool is E08000012.</li>
+                        <li>Sequential number of the declaration notification. For instance, the first declaration notification would be 00001.</li>
+                    </ol>
+
+                    <p class="govuk-hint ">Example URN: E08000012-00001</p>
+                </div>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-one-third">
+                        <label class="govuk-label " for="ons-code">
+                            9-digit ONS code
+                        </label>
+                        <input class="govuk-input "
+                               id="ons-code"
+                               name="ons-code"
+                               asp-for="SelectedLa"
+                               type="text"
+                               aria-describedby="ons-code"
+                               readonly>
+                    </div>
+                    <div style="width:1.5%; margin-top: 3.33%; float:left;">
+                        <span>—</span>
+                    </div>
+                    <div class="govuk-grid-column-one-third">
+                        <label class="govuk-label " for="SequentialNumber">
+                            Sequential number
+                        </label>
+                        <input class="govuk-input govuk-input" id="SequentialNumber"
+                               name="SequentialNumber"
+                               type="number" maxlength="5"
+                               asp-for="SequentialNumber"
+                               aria-describedby="SequentialNumber">
+                    </div>
+                </div>
+
+
+
+
+            </fieldset>
+        </div>
+
+        <div class="govuk-button-group govuk-!-margin-top-8">
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+
+            <a class="govuk-link" asp-page="@LafPages.SendDeclaration.ROUTE">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+}

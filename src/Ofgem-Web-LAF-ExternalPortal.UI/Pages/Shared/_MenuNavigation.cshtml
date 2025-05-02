@@ -1,0 +1,20 @@
+﻿@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@using Ofgem_Web_LAF_ExternalPortal.Services
+@model Ofgem.LAF.SharedLibrary.Enums.ExternalUserType
+
+<body>
+    <nav class="nav">
+        
+        <a class="govuk-link govuk-link--no-visited-state" id="@(Extensions.LafPageMenus.HOME)" href="\Index">Home</a>
+        <a class="govuk-link govuk-link--no-visited-state" id="@(Extensions.LafPageMenus.DASHBOARD)" href="\Dashboard">Existing declarations</a>
+        <a class="govuk-link govuk-link--no-visited-state" id="@(Extensions.LafPageMenus.SEND_DECLARATIONS)" href="@LafPages.SendDeclaration.ROUTE">Send declarations</a>
+        <a class="govuk-link govuk-link--no-visited-state" id="@(Extensions.LafPageMenus.SOI_DASHBOARD)" href="\Profiles\Soi\SoiDashboard">Statement of Intent</a>
+
+        @if (@Model == Ofgem.LAF.SharedLibrary.Enums.ExternalUserType.DesignatedAuthorisedSignatory ||
+        @Model == Ofgem.LAF.SharedLibrary.Enums.ExternalUserType.ResponsibleLocalAuthorityOfficer)
+        {
+            <a class="govuk-link govuk-link--no-visited-state" id="@(Extensions.LafPageMenus.EXTERNALUSERS)" href="\ExternalUsers\ExternalUsers">Manage users</a>
+        }
+
+    </nav>
+</body>

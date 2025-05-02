@@ -1,0 +1,108 @@
+﻿@page
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model DeclarationDetailModel
+
+@{
+    ViewData["Title"] = "Declaration details - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.DASHBOARD)" />
+
+<a data-test-id="BackButton" asp-page="@LafPages.Dashboard.ROUTE" class="govuk-back-link">Back</a>
+
+@if (Model.Declaration != null)
+{
+
+    <form method="POST">
+
+        <input type="hidden" asp-for="DeclarationId" />
+
+        @if (Model.SafeToShow)
+        {
+            <!-- Error summary  -->
+            @if (Model.Declaration.DeclarationErrors is { Count: > 0 })
+            {
+                <div class="govuk-error-summary" data-module="govuk-error-summary">
+                    <div role="alert">
+                        <h2 data-test-id="CoreCheckText" class="govuk-error-summary__title">
+                            There are the following problems with your declaration:
+                        </h2>
+                        <div class="govuk-error-summary__body">
+                            <ul data-test-id="CoreCheckValue" class="govuk-list govuk-error-summary__list laflex-error-list">
+
+                                @foreach (var item in Model.Declaration.DeclarationErrors)
+                                {
+                                    <li>
+                                        <a href="#id_@item.DeclarationErrorId"> @item.Message</a>
+                                    </li>
+                                }
+
+                            </ul>
+
+                            <br />
+
+                            <p>Click ‘Change’ to correct these errors.</p>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+        <span class="govuk-caption-l" data-test-id="DeclarationDetailText">Declaration details for</span>
+        <h1 class="govuk-heading-l" data-test-id="DeclarationUrnValue">@Model.Declaration?.Urn</h1>
+
+        @if (Model.SafeToShow)
+        {
+            @await Html.PartialAsync("_DeclarationDetail", Model)
+
+            @if (Model.HasChanges)
+            {
+                <div class="govuk-inset-text">
+                    You’ve made changes to this declaration. Select “Save changes” to update the declaration. This archives the existing declaration. Select “Cancel” to undo the changes and keep the current version.
+                </div>
+
+                <div class="govuk-button-group">
+
+                    <button type="submit" class="govuk-button" data-module="govuk-button">
+                        Save changes
+                    </button>
+
+                    <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                       asp-route-declarationId="@Model.DeclarationId">
+                        Cancel
+                    </a>
+
+                </div>
+            }
+        }
+        else
+        {
+            <div>
+                <h2 class="govuk-heading-l">
+                    There is a problem
+                </h2>
+                <div class="govuk-body">
+                    <p>This declaration notification does not belong to this local authority profile. The declaration notification details cannot be displayed.</p>
+                </div>
+            </div>
+            <div>
+                <h2 class="govuk-heading-l">
+                    What to do next:
+                </h2>
+                <div class="govuk-body">
+                    <ol>
+                        <li>Determine if this declaration notification belongs to your local authority.</li>
+                        <li>Verify the area code for this declaration notification is correct.</li>
+                        <li>Reupload the declaration notification file if this file belongs this local authority.</li>
+                    </ol>
+                    <p class="govuk-body">If this error persists, contact Ofgem at <a class="govuk-link" href="mailto:laflex.enquiry@ofgem.gov.uk">laflex.enquiry@ofgem.gov.uk</a> and provide the Unique Reference Number (URN).</p>
+                </div>
+            </div>
+        }
+
+    </form>
+}

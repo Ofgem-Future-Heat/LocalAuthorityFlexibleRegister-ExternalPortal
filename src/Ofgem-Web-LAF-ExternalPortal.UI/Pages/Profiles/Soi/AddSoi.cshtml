@@ -1,0 +1,114 @@
+﻿@page
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model AddSoi
+
+@{
+    ViewData["Title"] = "New SOI";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.PROFILES)" />
+
+<a asp-page="@LafPages.SOIDashboard.ROUTE"
+   asp-route-onsCode="@Model.OnsCode" class="govuk-back-link">Back</a>
+
+
+@if (Model.HasDisplayMessage)
+{
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+            <h2 data-test-id="CoreCheckText" class="govuk-error-summary__title">
+                Error:
+            </h2>
+            <div class="govuk-error-summary__body">
+                <p class="govuk-notification-banner__heading">@Model.DisplayMessage</p>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<main class="govuk-main-wrapper " id="add-soi-main-content" role="main">
+    <form method="POST">
+
+        <input asp-for="OnsCode" type="hidden" />
+        <input asp-for="BaseLocalAuthorityId" type="hidden" />
+        <input asp-for="BaseLocalAuthorityName" type="hidden" />
+
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-9">Add a new Statement of Intent (SOI)</h1>
+
+
+        <div class="govuk-form-group @(Model.SoiVersionHasError ? "govuk-form-group--error govuk-input--error input-validation-error" : "")">
+
+            <fieldset class="govuk-fieldset" role="group" aria-describedby="" id="soi-version">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading">
+                        SOI version number
+                    </h2>
+                </legend>
+                <div id="urn-number-hint" class="govuk-hint  govuk-!-width-two-thirds">
+                    This must match the version published on the local authority website
+                </div>
+
+                @if (Model.SoiVersionHasError)
+                {
+                    <div class="govuk-error-message la-flex-error-red  govuk-!-margin-top-1">@(Model.DisplayMessage)</div>
+                }
+
+                <input class="govuk-input govuk-input--width-10" id="SoiVersion" name="SoiVersion" type="text" asp-for="SoiVersion" aria-describedby="urn-number-hint">
+
+            </fieldset>
+        </div>
+        
+        <div>
+            @await Html.PartialAsync("Shared/_ThreePartDate", Model.DatePublishedControl)
+        </div>
+        
+        <div class="govuk-form-group @(Model.SoiLinkHasError ? "govuk-form-group--error govuk-input--error input-validation-error" : "")">
+
+            <fieldset class="govuk-fieldset govuk-!-margin-top-6" role="group" aria-describedby="" id="soi-link">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading">
+                        Link to SOI on local authority website
+                    </h2>
+                </legend>
+
+                <div id="soi-link-hint" class="govuk-hint  govuk-!-width-two-thirds">
+                    This is where the Statement of Intent is saved on the local authority website
+                </div>
+                
+                @if (Model.SoiLinkHasError)
+                {
+                    <div class="govuk-error-message la-flex-error-red  govuk-!-margin-top-1">@(Model.DisplayMessage)</div>
+                }
+
+                <input class="govuk-input govuk-input--width-30"
+                       id="SoiLink" name="SoiLink" type="text"
+                       aria-describedby="soi-link-hint"
+                       asp-for="SoiLink">
+
+            </fieldset>
+        </div>
+  
+        <hr class="govuk-section-break govuk-section-break--l  govuk-section-break--visible">
+        
+        <h2 class="govuk-heading-m  ">Adding declarations on behalf of other local authorities</h2>
+
+        <div class="govuk-inset-text govuk-fieldset govuk-!-margin-top-6">
+            You cannot add declarations on behalf of other local authorities until the Ofgem team assesses and passes the Statement of Intent that shows your local authority is uploading on their behalf.
+        </div>
+
+        <div class="govuk-button-group govuk-!-static-margin-top-9">
+
+            <button data-test-id="CreateSoiButton" type="submit" class="govuk-button" data-module="govuk-button"
+                    asp-page="@LafPages.AddSoi.ROUTE"
+                    asp-page-handler="@LafPages.AddSoi.METHOD_ADD">
+                Save and continue
+            </button>
+
+            <a class="govuk-link" asp-page="@LafPages.SOIDashboard.ROUTE">Cancel</a>
+        </div>
+    </form>
+</main>

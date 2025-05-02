@@ -1,0 +1,124 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.Change.AddressOfHouseholdModel
+@{
+    ViewData["Title"] = "Address of household - LA Flex - Ofgem";
+}
+
+<a data-test-id="BackButton" class="govuk-back-link"
+   asp-page="@LafPages.DeclarationDetail.ROUTE"
+   asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+   asp-route-declarationId="@Model.DeclarationId">Back</a>
+
+
+@if (Model != null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+                <h2 class="govuk-error-summary__title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul data-test-id="ErrorList" class="govuk-list govuk-error-summary__list laflex-error-list">
+                        <li>
+                            <a href="#@Model.ErrorId"> @Model.DisplayMessage</a>
+                        </li>
+                    </ul>
+                    <br />
+                </div>
+            </div>
+        </div>
+    }
+
+    <form method="POST">
+        <main class="govuk-main-wrapper " id="address-household-main-content" role="main">
+
+            <input type="hidden" asp-for="DeclarationId" />
+            <input type="hidden" asp-for="Urn" />
+
+            <span class="govuk-caption-l">Change declaration details for @Model.Urn</span>
+
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+
+                <h1 class="govuk-fieldset__heading">
+                    Address of household
+                </h1>
+
+            </legend>
+
+            <div class="govuk-form-group @(Model.ErrorAddressLine1 ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="AddressLine1">
+                    Address line 1
+                </label>
+
+                @if (@Model.ErrorAddressLine1)
+                {
+                    <p id="AddressLine1-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Model.DisplayMessage
+                    </p>
+                }
+
+                <input class="govuk-input govuk-input--width-20" id="AddressLine1"
+                       name="AddressLine1" type="text"
+                       asp-for="AddressLine1"
+                       data-test-id="address-line1-table-cell">
+            </div>
+
+            <div class="govuk-form-group @(Model.ErrorAddressLine2 ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="AddressLine2">
+                    Address line 2
+                </label>
+
+                @if (@Model.ErrorAddressLine2)
+                {
+                    <p id="AddressLine2-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Model.DisplayMessage
+                    </p>
+                }
+
+                <input class="govuk-input govuk-input--width-20" id="AddressLine2"
+                       name="AddressLine2" type="text"
+                       asp-for="AddressLine2"
+                       data-test-id="address-line2-table-cell">
+
+            </div>
+
+            <div class="govuk-form-group @(Model.ErrorPostcode ? "govuk-form-group--error" : "")">
+                <label class="govuk-label" for="Postcode">
+                    Postcode
+                </label>
+
+                @if (@Model.ErrorPostcode)
+                {
+                    <p id="Postcode-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @Model.DisplayMessage
+                    </p>
+                }
+
+                <input class="govuk-input govuk-input--width-20" id="Postcode"
+                       name="Postcode" type="text"
+                       asp-for="Postcode"
+                       data-test-id="postcode-table-cell">
+
+            </div>
+
+            <div class="govuk-button-group">
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Save and continue
+                </button>
+
+                <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+                   asp-page-handler="@LafPages.DeclarationDetail.METHOD_USE_CACHED_DATA"
+                   asp-route-declarationId="@Model.DeclarationId">
+                    Cancel
+                </a>
+
+            </div>
+        </main>
+    </form>
+}

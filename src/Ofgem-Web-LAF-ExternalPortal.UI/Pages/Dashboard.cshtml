@@ -1,0 +1,752 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model DashboardModel
+@{
+    ViewData["Title"] = "Existing declarations - LA Flex - Ofgem";
+
+    Layout = "_Layout_for_dashboard";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.DASHBOARD)" />
+
+<br />
+
+<section id="downloadNotificationArea" class="govuk-notification-banner ofegm-noftification-banner"
+         aria-labelledby="govuk-notification-banner-title"
+         data-module="govuk-notification-banner"
+         style="display:none;">
+    <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title">
+            Declaration(s) successfully downloaded
+        </h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+        <p data-test-id="GovukUploadCompletedNotificationText" class="govuk-body">
+            <span id="downloadCount"></span> Declaration(s) downloaded.
+        </p>
+    </div>
+</section>
+
+<!-- Message and Notification area -->
+@if (Model.HasProcessingDeclarationsMessage)
+{
+    <section id="hasProcessingDeclarationsArea" class="govuk-notification-banner ofegm-noftification-banner"
+             aria-labelledby="govuk-notification-banner-title"
+             data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__content">
+            <p data-test-id="GovukHasProcessingDeclarationsMessageText" class="govuk-notification-banner__heading">
+                Declarations are still being processed. The dashboard will be updated when processing is complete
+            </p>
+        </div>
+    </section>
+}
+
+@if (Model.HasAwaitingDecisionDeclarationsMessage)
+{
+    <section class="govuk-notification-banner" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Not all notifications have been uploaded
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <p class="govuk-notification-banner__heading" style="max-width: 100%;">
+                Notification template was not uploaded properly.
+            </p>
+            <p class="govuk-body">A previous upload had declarations that need to be resolved</p>
+            <a data-test-id="GovukResolveUploadButton" role="button" draggable="false" class="govuk-button" data-module="govuk-button"
+               asp-page-handler="@LafPages.Dashboard.METHOD_RESOLVE_UPLOAD_WAITING">
+                Resolve upload
+            </a>
+        </div>
+    </section>
+}
+
+@if (Model.ShowNotification)
+{
+    <section id="uploadNotificationArea" class="govuk-notification-banner ofegm-noftification-banner"
+             aria-labelledby="govuk-notification-banner-title"
+             data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                Declaration(s) successfully uploaded
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            @if (Model.HasDisplayMessage)
+            {
+                <p class="govuk-notification-banner__heading">
+                    @Model.DisplayMessage<br />@Html.Raw(Model.UploadDetailedInformation)
+                </p>
+            }
+            else
+            {
+                <p data-test-id="GovukUploadCompletedNotificationText" class="govuk-notification-banner__heading">
+                    @Model.DeclarationCount Declaration(s) uploaded. Declarations sorted in order of submission time.<br />
+                    @Html.Raw(Model.UploadDetailedInformation)
+                </p>
+            }
+
+        </div>
+    </section>
+}
+
+
+<!-- Main page area -->
+<h1 class="govuk-heading-l">Existing declarations</h1>
+<p class="govuk-body-m govuk-!-font-weight-regular">
+    All existing declarations previously uploaded are listed here. All declarations with the <b>"submission error"</b> status are shown first.
+</p>
+
+<p class="govuk-body-m govuk-!-font-weight-regular">
+    Search and review all declarations previously uploaded using the filters provided.
+</p>
+
+<br />
+
+<form method="POST">
+
+    <!-- Heading filters and Download buttons -->
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-quarter">
+            <button id="showAndHideButton" class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button" onclick="ShowOrHide()">Hide filter</button>
+        </div>
+        <div class="govuk-grid-column-three-quarter">
+
+            <input id="downloadDeclarations"
+                   type="submit"
+                   class="govuk-button govuk-button--secondary"
+                   data-module="govuk-button"
+                   asp-page-handler="@LafPages.Dashboard.METHOD_DOWNLOAD_SELECTED"
+                   value="Download selected files"
+                   onclick="showDownloadNotification()" />
+            
+            <div class="govuk-form-group" style=" float: right;">
+                <label class="govuk-label govuk-!-display-inline govuk-!-static-margin-right-1" for="Filter_SortOrderId">
+                    Sort by
+                </label>
+                <select class="govuk-select"
+                        asp-for="@(Model.Filter.SortOrderId)"
+                        asp-items="@(Model.Filter.SortOrder)">
+                </select>
+                <button type="submit" class="govuk-button govuk-!-static-margin-left-2" data-module="govuk-button"
+                        asp-page-handler="@LafPages.Dashboard.METHOD_APPLY_SORTING">
+                    Sort
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Main area -->
+    <div class="govuk-grid-row">
+
+        <!-- Filter box -->
+        <div id="filterBox" class="govuk-grid-column-one-quarter">
+
+            <div class="laflex-filter">
+                <div class="laflex-filter-header">
+                    <div class="laflex-filter-header-title">
+                        <h2 class="govuk-heading-m">Filter</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="la-flex-filter-content ">
+                <div class="laflex-filter-options">
+
+                    <div class="govuk-form-group">
+
+                        <div class="govuk-form-group">
+
+                            <fieldset class="govuk-fieldset" aria-describedby="search-hint">
+
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    <h3 class="govuk-!-static-margin-0 govuk-fieldset__legend--m ">Declaration notifications</h3>
+                                </legend>
+
+
+                                <div id="search-hint" class="govuk-hint govuk-!-font-size-16">
+                                    Find declaration notifications by searching for a unique reference number (URN) or household address. You can search using only part of an address or URN.
+                                </div>
+
+
+                                <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
+
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="filterByAddress_2" name="filterByAddress" type="radio"
+                                               value="false" asp-for="FilterByAddress">
+                                        <label class="govuk-label govuk-radios__label" for="filterByAddress_2">
+                                            Unique reference number (URN)
+                                        </label>
+
+                                    </div>
+
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="filterByAddress_1" name="filterByAddress" type="radio"
+                                               value="true" asp-for="FilterByAddress">
+                                        <label class="govuk-label govuk-radios__label" for="filterByAddress_1">
+                                            Household address
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+
+                            </fieldset>
+
+
+                        </div>
+
+                        <label class="govuk-label govuk-label--s govuk-!-static-padding-top-3" for="search-term">
+                            Enter search term
+                        </label>
+
+                        <input class="govuk-input" id="search-term" name="searchTerm" type="text" asp-for="SearchTerm">
+                    </div>
+
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+                    <!-- Dates -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="date-add">
+                            <legend class="govuk-fieldset__legend">
+                                <h3 class="govuk-fieldset__legend--m govuk-!-static-margin-0">
+                                    Date added
+                                </h3>
+                            </legend>
+                            <p id="date-add" class="govuk-hint govuk-!-font-size-16 govuk-!-static-margin-bottom-3">
+                                Filter declaration notifications by date.
+                            </p>
+
+                            <h3 class="govuk-heading-s govuk-!-margin-bottom-2">From</h3>
+                            <div id="from" class="govuk-select-field  govuk-!-margin-bottom-5  @(Model.Filter.DateHasError ? "govuk-form-group--error" : "")   @(Model.Filter.FromDateHasError ? "govuk-form-group--error" : "") ">
+
+                                @if (Model.Filter.DateHasError || Model.Filter.FromDateHasError)
+                                {
+                                    <p id="threepartdate-issued-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>@Model.Filter.DateErrorText
+                                    </p>
+                                }
+
+                                <!-- Day -->
+                                <div class="govuk-select-field__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-select-field__label" for="fromDayDropdown">
+                                            Day
+                                        </label>
+                                        <select asp-for="@Model.Filter.DateFromDay"
+                                                asp-items="@Model.DateDays"
+                                                class="govuk-select short-select-width-day"
+                                                id="fromDayDropdown">
+                                            <option value="0"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Month -->
+                                <div class="govuk-select-field__item">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-select-field__label" for="monthFromDropdown">
+                                            Month
+                                        </label>
+                                        <select asp-for="@Model.Filter.DateFromMonth"
+                                                asp-items="@Model.DateMonths"
+                                                class="govuk-select short-select-width-month"
+                                                id="monthFromDropdown">
+                                            <option value="0"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Year -->
+                                <div class="govuk-select-field__item govuk-!-margin-right-0">
+                                    <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-select-field__label" for="yearFromDropdown">
+                                            Year
+                                        </label>
+                                        <select asp-for="@Model.Filter.DateFromYear"
+                                                asp-items="@Model.DateFromYears"
+                                                class="govuk-select short-select-width-year"
+                                                id="yearFromDropdown">
+                                            <option value="0"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="govuk-form-group">
+                                <h3 class="govuk-heading-s govuk-!-margin-bottom-2">To</h3>
+
+                                <div id="to" class="govuk-select-field @(Model.Filter.DateHasError ? "govuk-form-group--error" : "") @(Model.Filter.ToDateHasError ? "govuk-form-group--error" : "") ">
+
+                                    @if (Model.Filter.ToDateHasError)
+                                    {
+                                        <p id="threepartdate-issued-error" class="govuk-error-message">
+                                            <span class="govuk-visually-hidden">Error:</span>@Model.Filter.DateErrorText
+                                        </p>
+                                    }
+
+                                    <!-- Day -->
+                                    <div class="govuk-select-field__item">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-select-field__label" for="dayToDropdown">
+                                                Day
+                                            </label>
+                                            <select asp-for="@Model.Filter.DateToDay"
+                                                    asp-items="@Model.DateDays"
+                                                    class="govuk-select short-select-width-day"
+                                                    id="dayToDropdown">
+                                                <option value="0"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Month -->
+                                    <div class="govuk-select-field__item">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-select-field__label" for="monthToDropdown">
+                                                Month
+                                            </label>
+                                            <select asp-for="@Model.Filter.DateToMonth"
+                                                    asp-items="@Model.DateMonths"
+                                                    class="govuk-select short-select-width-month"
+                                                    id="monthToDropdown">
+                                                <option value="0"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Year -->
+                                    <div class="govuk-select-field__item govuk-!-margin-right-0">
+                                        <div class="govuk-form-group">
+                                            <label class="govuk-label govuk-select-field__label" for="yearToDropdown">
+                                                Year
+                                            </label>
+                                            <select asp-for="@Model.Filter.DateToYear"
+                                                    asp-items="@Model.DateToYears"
+                                                    class="govuk-select short-select-width-year"
+                                                    id="yearToDropdown">
+                                                <option value="0"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+                    <!-- Routes -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">
+                                <h3 class="govuk-fieldset__legend--m govuk-!-static-margin-0">
+                                    Route
+                                </h3>
+                            </legend>
+
+                            <p class="govuk-hint govuk-!-font-size-16">Select the routes to search for. </p>
+
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+
+                                    <input asp-for="Filter.Route1" class="govuk-checkboxes__input" type="checkbox">
+
+                                    <label class="govuk-label govuk-checkboxes__label" for="Filter_Route1">
+                                        Route 1
+                                    </label>
+                                    <input id="Filter_Route1" name="Filter_Route1" type="hidden" value="false">
+
+                                </div>
+
+                                <div class="govuk-checkboxes__item">
+
+                                    <input asp-for="Filter.Route2" class="govuk-checkboxes__input" type="checkbox">
+                                    <label class="govuk-label govuk-checkboxes__label" for="Filter_Route2">
+                                        Route 2
+                                    </label>
+                                    <input id="Filter_Route2" name="Filter_Route2" type="hidden" value="false">
+
+                                </div>
+
+                                <div class="govuk-checkboxes__item">
+
+                                    <input asp-for="Filter.Route3" class="govuk-checkboxes__input" type="checkbox">
+                                    <label class="govuk-label govuk-checkboxes__label" for="Filter_Route3">
+                                        Route 3
+                                    </label>
+                                    <input id="Filter_Route3" name="Filter_Route3" type="hidden" value="false">
+
+                                </div>
+
+                                <div class="govuk-checkboxes__item">
+
+                                    <input asp-for="Filter.Route4" class="govuk-checkboxes__input" type="checkbox">
+                                    <label class="govuk-label govuk-checkboxes__label" for="Filter_Route4">
+                                        Route 4
+                                    </label>
+                                    <input id="Filter_Route4" name="Filter_Route4" type="hidden" value="false">
+
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+
+                    <!-- Status -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">
+                                <h3 class="govuk-!-static-margin-0 govuk-fieldset__legend--m ">Status</h3>
+
+                            </legend>
+
+                            <p class="govuk-hint govuk-!-font-size-16 govuk-!-static-margin-bottom-3">Select the status to search for. </p>
+
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+
+                                    <input asp-for="Filter.Submitted" class="govuk-checkboxes__input" type="checkbox" id="Filter_Submitted">
+                                    <label class="govuk-label govuk-checkboxes__label" id="Filter_Submitted_Label" for="Filter_Submitted">
+                                        Submitted
+                                    </label>
+                                    <input id="Filter_Submitted_Hidden" name="Filter_Submitted" type="hidden" value="false">
+                                </div>
+
+                                <div class="govuk-checkboxes__item">
+
+                                    <input asp-for="Filter.SubmissionErrors" class="govuk-checkboxes__input" type="checkbox" id="Filter_Submission_Errors">
+                                    <label class="govuk-label govuk-checkboxes__label" id="Filter_Submission_Errors_Label" for="Filter_Submission_Errors">
+                                        Submission Errors
+                                    </label>
+                                    <input id="Filter_Submission_Errors_Hidden" name="Filter_Submission_Errors" type="hidden" value="false">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    </div>
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+
+                    <!-- Local Authorities -->
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">
+                                <h3 class="govuk-fieldset__legend--m govuk-!-static-margin-0">
+                                    Local authority
+                                </h3>
+                            </legend>
+
+                            <p class="govuk-hint govuk-!-font-size-16">Select the local authority to search for.</p>
+
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                @if (Model.Filter.LAs != null)
+                                {
+                                    @for (int i = 0; i < Model.Filter.LAs.Count; i++)
+                                    {
+                                        var index = i;
+                                        <div class="govuk-checkboxes__item">
+                                            <input type="hidden" asp-for="@Model.Filter.LAs[i].OnsCode" />
+                                            <input type="hidden" asp-for="@Model.Filter.LAs[i].Name" />
+                                            @Html.CheckBoxFor(m => m.Filter.LAs![index].IsSelected, new { @class = "govuk-checkboxes__input", @data_Text = Model.Filter.LAs[index].Name })
+                                            <label class="govuk-label govuk-checkboxes__label" for="@("Filter_LAs_" + index + "__IsSelected")">
+                                                @Model.Filter.LAs[index].Name
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <button type="submit" class="govuk-button govuk-!-static-margin-right-2" data-module="govuk-button"
+                            asp-page-handler="@LafPages.Dashboard.METHOD_APPLY_FILTERS">
+                        Apply filters
+                    </button>
+                    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button"
+                            asp-page-handler="@LafPages.Dashboard.METHOD_CLEAR_FILTERS">
+                        Clear
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Results Area -->
+        <div id="tableBox" class="govuk-grid-column-three-quarters">
+
+            <!-- Table -->
+            <table class="govuk-table la-flex-font-smaller" aria-label="Declarations selected by the filters">
+                <caption class="rowcount">@Model.TotalRecords records found</caption>
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header ">
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                <div class="govuk-checkboxes__item">
+
+                                    <input class="govuk-checkboxes__input"
+                                           id="select_all_declarations"
+                                           name="select_all_declarations"
+                                           type="checkbox"
+                                           value="dec-select"
+                                           onclick="SelectAll(this,'data-selectable-from-heading')">
+
+                                    <label class="govuk-label govuk-checkboxes__label" for="select_all_declarations">
+                                        <span class="govuk-visually-hidden">Toggle select all declarations</span>
+                                    </label>
+
+                                </div>
+                            </div>
+                        </th>
+                        <th scope="col" class="govuk-table__header">Unique reference<br>number (URN)</th>
+                        <th scope="col" class="govuk-table__header">Household address</th>
+                        <th scope="col" class="govuk-table__header">Route</th>
+                        <th scope="col" class="govuk-table__header">Added</th>
+                        <th scope="col" class="govuk-table__header">Householder <br /> eligibility</th>
+                        <th scope="col" class="govuk-table__header">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+
+                    @if (Model.Declarations is not null)
+                    {
+                        @for (var index = 0; index < Model.Declarations.Count; index++)
+                        {
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+
+                                    @if (Model.Declarations![index].SafeToShow)
+                                    {
+                                        <div class="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes__item">
+
+                                            <input id="Declarations_@(index)__Urn"
+                                                   name="Declarations[@(index)].Urn"
+                                                   type="hidden"
+                                                   value="@Model.Declarations![index].Urn" />
+
+                                            <input class="govuk-checkboxes__input"
+                                                   asp-for="@Model.Declarations![index].Selected"
+                                                   data-selectable-from-heading="true" />
+
+                                            <label class="govuk-label govuk-checkboxes__label" for="Declarations_@(index)__Selected">
+                                                <span class="govuk-visually-hidden">Select declaration URN @Model.Declarations[index].Urn for download</span>
+                                            </label>
+                                        </div>
+                                    }
+
+
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.Declarations[index].DeclarationId">
+                                        @Model.Declarations[index].Urn
+                                    </a>
+                                    <br />
+
+                                    @if (Model.Declarations![index].SafeToShow)
+                                    {
+                                        @Model.Declarations[index].LocalAuthority
+                                    }
+
+                                </td>
+                                <td class="govuk-table__cell">
+
+                                    @if (Model.Declarations![index].SafeToShow)
+                                    {
+                                        @Model.Declarations[index].FullAddress
+                                    }
+
+                                </td>
+                                <td class="govuk-table__cell">
+                                    @if (Model.Declarations![index].SafeToShow)
+                                    {
+                                        @if (Model.Declarations[index].Route == Constants.Route4Text)
+                                        {
+                                            <span>Route 4</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@Model.Declarations[index].Route</span>
+                                        }
+                                    }
+                                </td>
+                                <td class="govuk-table__cell">@Model.Declarations[index].DisplayCreatedDate</td>
+                                <td class="govuk-table__cell">
+                                    @if (Model.Declarations![index].SafeToShow)
+                                    {
+                                        @Model.Declarations[index].DateOfHouseholderEligibility
+
+                                    }
+                                </td>
+
+                                <td class="govuk-table__cell">
+
+                                    @await Html.PartialAsync("_DeclarationStatus", Model.Declarations[index].Status)
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+            @await Html.PartialAsync("_Pagination", Model.Pagination)
+
+        </div>
+
+    </div>
+
+</form>
+
+
+@section Scripts
+{
+    <script>
+        //
+        // Show/Hide element based upon its visibility
+        //
+        function ShowOrHide() {
+            let buttonElement = document.getElementById("showAndHideButton");
+            let targetFilterElement = document.getElementById("filterBox");
+            let targetTableElement = document.getElementById("tableBox");
+
+            if (targetFilterElement.style.display === "none") {
+                targetFilterElement.style.display = "block";
+                targetTableElement.classList.add("govuk-grid-column-three-quarters");
+                buttonElement.textContent = "Hide Filter"
+            } else {
+                targetFilterElement.style.display = "none";
+                targetTableElement.classList.remove("govuk-grid-column-three-quarters");
+                buttonElement.textContent = "Show Filter"
+            }
+        }
+
+
+        //
+        // Looks for any element that is a checkbox and has the targetAttribute set to "true"
+        //
+        // data-selectable-from-heading = "true"
+        //
+        function SelectAll(element, targetAttribute) {
+
+            let checkValue = element.checked;
+
+            let formElements = document.querySelectorAll('[' + targetAttribute + ']');
+
+            if (formElements.length === 0) return;
+
+            for (const element of formElements) {
+
+                if (element.dataset.selectableFromHeading === 'true') {
+                    element.checked = checkValue;
+                }
+            }
+        }
+
+
+        //
+        // sets the select all checkbox to false if there are any inconsistancies in the child checkboxes
+        //
+        let formCheckboxes = document.querySelectorAll('[data-selectable-from-heading]');
+        function selectAllReset() {
+
+            if (formCheckboxes.length === 0) return;
+
+            for (let i = 0; i < formCheckboxes.length; i++) {
+                formCheckboxes[i].checked = false;
+            }
+
+            document.getElementById('select_all_declarations').checked = false;
+        }
+
+        function selectAllValidation() {
+
+            if (formCheckboxes.length === 0) return;
+
+            // select all consistancies
+            let checkValue = formCheckboxes[0].checked;
+
+            for (let i = 0; i < formCheckboxes.length; i++) {
+
+                if (formCheckboxes[i].checked != checkValue) {
+                    document.getElementById('select_all_declarations').checked = false;
+                    return;
+                }
+            }
+
+            if (checkValue === true) {
+                document.getElementById('select_all_declarations').checked = checkValue;
+            }
+        }
+
+
+        //
+        // enables / disables the download button
+        //
+        let downloadButton = document.getElementById('downloadDeclarations');
+        function downloadAvailability() {
+
+            if (downloadButton == null) return;
+
+            // downloads available
+            let downloadsAllowed = false;
+
+            for (let i = 0; i < formCheckboxes.length; i++) {
+                if (formCheckboxes[i].checked) {
+                    downloadsAllowed = true;
+                }
+            }
+
+            if (downloadsAllowed) {
+                downloadButton.removeAttribute('disabled');
+            } else {
+                downloadButton.setAttribute('disabled', '');
+            }
+        }
+
+        //
+        // show the download notification area with totals
+        //
+        function showDownloadNotification() {
+
+            let formCheckboxes = document.querySelectorAll('[data-selectable-from-heading]:checked');
+            let downloadNotificationArea = document.getElementById('downloadNotificationArea');
+            let downloadCount = document.getElementById('downloadCount');
+            let uploadNotificationArea = document.getElementById("uploadNotificationArea");
+
+            if (formCheckboxes === null) return;
+            if (downloadNotificationArea === null) return;
+            if (downloadCount === null) return;
+
+            downloadCount.innerHTML = formCheckboxes.length;
+            downloadNotificationArea.style.display = "block";
+
+            if (uploadNotificationArea === null) return;
+
+            uploadNotificationArea.style.display = "none";
+        }
+
+        // form status Checks
+        function formStatusChecks() {
+            selectAllValidation();
+            downloadAvailability();
+        }
+
+
+
+        // set the checkbox to an initial false
+        selectAllReset();
+
+        setInterval(formStatusChecks, 100);
+
+    </script>
+}

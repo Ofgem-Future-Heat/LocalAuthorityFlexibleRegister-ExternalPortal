@@ -1,0 +1,28 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.SignedOutModel
+@{
+    ViewData["Title"] = "Signed out - LA Flex - Ofgem";
+
+    Layout = "_Layout_for_SignOut";
+
+}
+
+<br />
+<br />
+<br />
+
+<form data-no-timeout="true">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <h1 class="govuk-heading-l" role="status">
+                You have signed out
+            </h1>
+            <p>
+                <a asp-page="@LafPages.LANDING" class="govuk-button" data-module="govuk-button">Sign in again</a>
+            </p>
+
+        </div>
+    </div>
+</form>

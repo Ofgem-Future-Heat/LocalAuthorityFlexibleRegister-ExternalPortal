@@ -1,0 +1,100 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.Multiple.UploadIsOkModel
+@{
+    ViewData["Title"] = "Declaration notification uploaded - LA Flex - Ofgem";
+}
+
+
+<a data-test-id="BackButton" asp-page="@LafPages.LANDING" class="govuk-back-link">Back</a>
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+
+    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                File received successfully
+            </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+            <h1 class="govuk-notification-banner__heading">
+                We're checking your declaration notification file, but it has not yet been added to our system
+            </h1>
+        </div>
+    </div>
+
+
+    <h1 class="govuk-heading-xl">What happens next</h1>
+
+
+    <p class="govuk-body">
+        We'll now carry out core checks of the file. This includes an automated security check of the file.
+    </p>
+
+
+    <h2 class="govuk-heading-l">If the file fails core checks </h2>
+
+    <p class="govuk-body">
+        The declaration notifications will be added to the LA Flex register but their status will be set as <b>"Submission errors"</b>. And you'll have to resolve these errors before these declaration notifications can progress further.
+    </p>
+
+
+    <h3 class="govuk-heading-m">Fixing submission errors</h3>
+
+    <p class="govuk-body">
+        You can fix submission errors in the declaration notifications by:
+    </p>
+    <ul class="govuk-list govuk-list--number">
+        <li>
+            Going into the<a asp-page="@LafPages.Dashboard.ROUTE" data-module="govuk-button">
+                Existing declarations
+            </a> page.
+        </li>
+        <li>Finding the declaration notification with the "submission errors" status and selecting this.</li>
+        <li>Following the instruction in the error message to resolve this.</li>
+
+    </ul>
+    <p></p>
+
+
+
+    <h3 class="govuk-heading-m">If the file fails the security check </h3>
+
+    <p class="govuk-body">
+        No declaration notifications will be added to the LA Flex register.
+    </p>
+
+    <p class="govuk-body">
+        If this happens, you need to:
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>save a new declaration notification file from the Ofgem website</li>
+        <li>add your data to this</li>
+        <li>save the file as a CSV </li>
+        <li>upload the file again </li>
+    </ul>
+    <p></p>
+
+    <h3 class="govuk-heading-m">If the file passes core checks </h3>
+    <p class="govuk-body">
+        The declaration notifications will be added to the declaration notification list in LA Flex. Their status will be set to
+        <b>"Submitted"</b>  while further checks are carried out by the Ofgem team.
+    </p>
+
+    <h3 class="govuk-heading-m">How we'll let you know about the status of the file</h3>
+
+    <p class="govuk-body">
+        We'll email you an update about the file. This will be sent to the email address you've used to create an LA user profile with us.
+    </p>
+    <p class="govuk-body">
+        You can also view all latest declaration notification file uploads on the homepage.
+    </p>
+
+    <div class="govuk-button-group govuk-!-margin-top-8">
+        <a asp-page="@LafPages.Dashboard.ROUTE" draggable="false" class="govuk-button" data-module="govuk-button">
+            View all declaration notifications
+        </a>
+    </div>
+
+</main>

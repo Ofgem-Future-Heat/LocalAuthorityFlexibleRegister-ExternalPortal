@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Models
+<!DOCTYPE html>
+<html lang="en" class="govuk-template app-html-class">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VJ7ED4WSHD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-VJ7ED4WSHD');
+    </script>
+
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+
+    @await Html.PartialAsync("_HeadDetail")
+
+</head>
+
+<body class="govuk-template__body app-body-class" data-test="My value" data-other="report:details">
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KK8SNQQ3"
+                height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <script type="text/javascript">
+        document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+    </script>
+
+    @await Html.PartialAsync("_CookieBanner")
+
+    <a href="#layout-main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
+
+    <header class="govuk-header la-flex-internal-header" id="welcomeLogout" role="banner" data-module="govuk-header">
+        <div class="govuk-header__container govuk-width-container" style="border-bottom: none;">
+
+            @await Html.PartialAsync("_HeaderDetail", new ExternalUserModel
+               {
+                   FirstName = new Claims(this.Context.User).FirstName,
+                   LastName = new Claims(this.Context.User).LastName,
+                   EmailAddress = new Claims(this.Context.User).EmailAddress
+               })
+
+        </div>
+    </header>
+
+    <div class="govuk-width-container">
+        <div>
+            <!-- banner  -->
+            @await Html.PartialAsync("_BannerDetail")
+        </div>
+    </div>
+
+    <div class="govuk-width-container">
+
+        <!-- timeout warning -->
+        @await Html.PartialAsync("_TimeoutWarning")
+
+        <!-- main page area -->
+        <main class="govuk-main-wrapper app-main-class" id="layout-main-content" role="main">
+           
+            @RenderBody()
+
+        </main>
+
+    </div>
+
+    <footer class="govuk-footer " id="footer" role="contentinfo">
+        @await Html.PartialAsync("_FooterDetail")
+    </footer>
+
+    <script src="/js/jquery.js" asp-append-version="true"></script>
+    <script src="/js/all.js" asp-append-version="true"></script>
+    <script src="/js/site.js" asp-append-version="true"></script>
+    <script src="/js/cookiebanner.js" asp-append-version="true"></script>
+    <script>
+        window.GOVUKFrontend.initAll()
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

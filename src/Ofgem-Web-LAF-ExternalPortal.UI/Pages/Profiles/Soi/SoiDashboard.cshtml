@@ -1,0 +1,138 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model SoiDashboardModel
+@{
+    ViewData["Title"] = "Statement of Intent dashboard - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SOI_DASHBOARD)" />
+
+<br />
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <form method="POST">
+
+        <div>
+            <h1 class="govuk-heading-l">Statement of Intent</h1>
+        </div>
+       
+        <p class="govuk-body-m govuk-!-font-weight-regular">View all Statements of Intents you have sent to Ofgem</p>
+
+        <!-- Filter and Download buttons -->
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <div>
+                    @if (@Model.ExternalUserType == Ofgem.LAF.SharedLibrary.Enums.ExternalUserType.DesignatedAuthorisedSignatory ||
+                         @Model.ExternalUserType == Ofgem.LAF.SharedLibrary.Enums.ExternalUserType.ResponsibleLocalAuthorityOfficer)
+                    {
+                        <button type="submit" data-test-id="AddNewSoiBtn" class="govuk-button" data-module="govuk-button" 
+                           asp-page-handler="@LafPages.SOIDashboard.METHOD_CLEAR_DATA">
+                            Add new Statement of Intent
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <!-- Results Area -->
+            <div class="govuk-grid-column-full" id="tableBox">
+
+                <table class="govuk-table la-flex-font-smaller">
+
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Local authorities covered</th>
+                            <th scope="col" class="govuk-table__header ">Version number</th>
+                            <th scope="col" class="govuk-table__header ">Link</th>
+                            <th scope="col" class="govuk-table__header">Date published</th>
+                            <th scope="col" class="govuk-table__header">Status</th>
+                            <th scope="col" class="govuk-table__header">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+
+                        @if (Model.StatementOfIntents != null)
+                        {
+                            @for (var index = 0; index < Model.StatementOfIntents.Count; index++)
+                            {
+
+                                <tr class="govuk-table__row">
+
+                                    <!-- Row 1 -->
+                                    <td class="govuk-table__cell">
+                                        @if (@Model.StatementOfIntents[index].SoiStatus == Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.ToBeAssessed)
+                                        {
+                                            <i>To be confirmed</i>
+                                        }
+                                        else
+                                        {
+                                            @Model.StatementOfIntents[index].LocalAuthority
+                                            var designatedLAs = Model.StatementOfIntents[index].DesignatedLAs;
+                                            if (designatedLAs != null && designatedLAs.Count > 0)
+                                            {
+                                                @foreach (var la in designatedLAs)
+                                                {
+                                                    @(", " + la.LocalAuthorityName)
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                    <td class="govuk-table__cell">@Model.StatementOfIntents[index].VersionNumber</td>
+                                    <td class="govuk-table__cell">
+                                        <a href="@Model.StatementOfIntents[index].SoiLink" target="_blank" class="govuk-link">@Model.StatementOfIntents[index].SoiTruncatedLink</a>
+                                    </td>
+                                    <td class="govuk-table__cell">
+                                        @Model.StatementOfIntents[index].DisplayCreatedDate
+                                    </td>
+
+                                    <td class="govuk-table__cell">
+                                        @await Html.PartialAsync("_StatementOfIntentStatus", Model.StatementOfIntents[index].SoiStatus)
+                                    </td>
+                                    <td class="govuk-table__cell">
+                                        <a asp-page="@LafPages.SoiSummaryView.ROUTE"
+                                           asp-page-handler="@LafPages.SoiSummaryView.METHOD_GET_BY_ID"
+                                           asp-route-statementOfIntentId=@Model.StatementOfIntents[index].StatementOfIntentId>
+                                            View
+                                            <span class="govuk-visually-hidden">Statement of Intent Summary</span>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                @await Html.PartialAsync("_Pagination", Model.Pagination)
+
+
+
+            </div>
+        </div>
+    </form>
+</main>
+@section Scripts
+{
+    <script>
+        //
+        // Show/Hide element based upon its visibility
+        //
+        function ShowOrHide() {
+            let buttonElement = document.getElementById("showAndHideButton");
+            let targetFilterElement = document.getElementById("filterBox");
+            let targetTableElement = document.getElementById("tableBox");
+
+            if (targetFilterElement.style.display === "none") {
+                targetFilterElement.style.display = "block";
+                targetTableElement.classList.add("govuk-grid-column-three-quarters");
+                buttonElement.textContent = "Hide Filter"
+            } else {
+                targetFilterElement.style.display = "none";
+                targetTableElement.classList.remove("govuk-grid-column-three-quarters");
+                buttonElement.textContent = "Show Filter"
+            }
+        }
+    </script>
+}

@@ -1,0 +1,133 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home page - LA Flex - Ofgem";
+
+    Layout = "_Layout";
+}
+
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.HOME)" />
+
+<form method="POST" id="loginForm">
+
+    <br />
+    <br />
+
+    <h1 class="govuk-heading-xl">
+        Local Authority Flexible Eligibility
+    </h1>
+    
+    @await Html.PartialAsync("Shared/_Announcements", Model.PublishedAnnouncements)
+
+    <div class="laf-table-container">
+        <span class="govuk-heading-s laf-table-container-heading">Latest declaration notification submission errors </span>
+
+        <table class="govuk-table govuk-grid-column-full">
+
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header govuk-!-padding-left-3">Unique reference number</th>
+                    <th scope="col" class="govuk-table__header ">Household address</th>
+                    <th scope="col" class="govuk-table__header">Date added</th>
+                    <th scope="col" class="govuk-table__header">Action</th>
+                </tr>
+            </thead>
+
+            <tbody class="govuk-table__body">
+
+                @foreach (var declaration in Model.Declarations)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell  govuk-!-padding-left-3">
+                            <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+                               asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                               asp-route-declarationId="@declaration.DeclarationId">
+                                @declaration.Urn
+                            </a>
+                        </td>
+                        <td class="govuk-table__cell">@declaration.AddressLine1 @declaration.AddressLine2 @declaration.PostCode</td>
+                        <td class="govuk-table__cell">@declaration.DisplayCreatedDate</td>
+                        <td class="govuk-table__cell  govuk-!-padding-left-3">
+                            <a asp-page="@LafPages.DeclarationDetail.ROUTE"
+                               asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                               asp-route-declarationId="@declaration.DeclarationId">
+                                View error
+                            </a>
+                        </td>
+                    </tr>
+
+            }
+
+            </tbody>
+        </table>
+
+
+        <p class="govuk-body govuk-!-padding-left-3">
+            <a asp-page="@LafPages.Dashboard.ROUTE" data-module="govuk-button">
+                View all declaration notifications
+            </a>
+        </p>
+
+    </div>
+
+
+    <br />
+    <br />
+
+    <div class="govuk-grid-row">
+
+        <div class="govuk-grid-column-full">
+
+            <h2 class="govuk-heading-l">Send declarations</h2>
+            <p class="govuk-body">You can submit declarations that you have issued to suppliers and installers engaged with eligible households. You may choose to either complete a declaration notification template and submit it to Ofgem, or you may enter the information directly within this platform.</p>
+
+            <a class="govuk-button" role="button" draggable="false" data-module="govuk-button"
+               asp-page="@LafPages.SendDeclaration.ROUTE">
+                Send declarations
+            </a>
+
+        </div>
+    </div>
+
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+
+    <div class="govuk-grid-row">
+
+
+        <div class="govuk-grid-column-full">
+
+            <h2 class="govuk-heading-l">Statement of Intent</h2>
+            <p class="govuk-body">
+                View previously submitted Statements of Intent, or notify Ofgem of a new version that has been published on your local authority's website.
+            </p>
+            <a class="govuk-button" role="button" draggable="false" data-module="govuk-button"
+               asp-page="@LafPages.SOIDashboard.ROUTE">
+                Go to Statement of Intent
+            </a>
+
+        </div>
+    </div>
+
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+
+    <h2 class="govuk-heading-m">Local Authority Flexible Eligibility resources and documents</h2>
+    <p class="govuk-body">
+        All templates and documents
+        <a href="https://www.ofgem.gov.uk/publications/great-british-insulation-scheme-and-eco4-la-and-supplier-flex-forms-and-subsidiary-documents" class="govuk-link">are available to download on the Ofgem website.</a>
+        The use of these forms within LA Flex is compulsory from 1 September 2023.
+    </p>
+
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+    <h2 class="govuk-heading-m">Help using the service</h2>
+    <p class="govuk-body">
+        You can email the Ofgem team at
+        <a href="mailto:laflex.enquiry@ofgem.gov.uk" class="govuk-link">laflex.enquiry@ofgem.gov.uk</a>
+        if you need help using the external service. We'll reply to your email as soon as possible.
+    </p>
+
+</form>

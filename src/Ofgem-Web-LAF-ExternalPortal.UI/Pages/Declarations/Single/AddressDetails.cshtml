@@ -1,0 +1,137 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Enums
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.Single.AddressDetails
+@{
+    ViewData["Title"] = "Address Details - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SEND_DECLARATIONS)" />
+
+@if (Model != null)
+{
+    @if (Model.SingleDeclarationJourney != null)
+    {
+        switch (Model.SingleDeclarationJourney.Route)
+        {
+            case ReferralRoutes.ProxyTargeting:
+                <a data-test-id="BackButton" asp-page="@LafPages.AdditionalProxies.ROUTE" class="govuk-back-link">Back</a>
+                break;
+            case ReferralRoutes.BespokeTargeting:
+                <a data-test-id="BackButton" asp-page="@LafPages.Route4ApplicationNumber.ROUTE" class="govuk-back-link">Back</a>
+                break;
+            default:
+                <a data-test-id="BackButton" asp-page="@LafPages.SelectReferralRoute.ROUTE" class="govuk-back-link">Back</a>
+                break;
+        }
+    }
+
+
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+                <h2 class="govuk-error-summary__title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul data-test-id="ErrorList" class="govuk-list govuk-error-summary__list laflex-error-list">
+                        @foreach (var error in Model.DisplayMessages)
+                        {
+                            <li>
+                                <a href="#@error.Id">@error.Message</a>
+                            </li>
+                        }
+                    </ul>
+                    <br />
+                </div>
+            </div>
+        </div>
+    }
+
+    <form method="POST">
+
+        <span class="govuk-caption-l">Create a single declaration notification</span>
+        <fieldset class="govuk-fieldset">
+
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-fieldset__heading">
+                    Address of household
+                </h1>
+            </legend>
+
+            <div class="govuk-form-group @(Model.Line1Error ? "govuk-form-group--error laf-table-error" : "")">
+                <label class="govuk-label" for="Line1">
+                    Address line 1
+                </label>
+
+                @if (Model.Line1Error)
+                {
+                    <p id="PostcodeError" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span>
+                        @Model.Line1ErrorMessage
+                    </p>
+                }
+
+                <input class="govuk-input govuk-input--width-20"
+                       id="Line1"
+                       name="Line1"
+                       type="text"
+                       asp-for="Line1">
+            </div>
+
+            <div class="govuk-form-group @(Model.Line2Error ? "govuk-form-group--error laf-table-error" : "")">
+                <label class="govuk-label" for="Line2">
+                    Address line 2
+                </label>
+
+                @if (Model.Line2Error)
+                {
+                    <p id="PostcodeError" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span>
+                        @Model.Line2ErrorMessage
+                    </p>
+                }
+
+                <input class="govuk-input govuk-input--width-20"
+                       id="Line2"
+                       name="Line2"
+                       type="text"
+                       asp-for="Line2">
+            </div>
+
+            <div class="govuk-form-group @(Model.PostcodeError ? "govuk-form-group--error laf-table-error" : "")">
+                <label class="govuk-label" for="Postcode">
+                    Postcode
+                </label>
+
+                @if (Model.PostcodeError)
+                {
+                    <p id="PostcodeError" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span>
+                        @Model.PostcodeErrorMessage
+                    </p>
+                }
+
+                <input class="govuk-input govuk-input--width-20"
+                       id="Postcode"
+                       name="Postcode"
+                       type="text"
+                       asp-for="Postcode">
+            </div>
+        </fieldset>
+
+        <div class="govuk-button-group govuk-!-margin-top-8">
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+
+            <a class="govuk-link" asp-page="@LafPages.SendDeclaration.ROUTE">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+}

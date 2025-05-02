@@ -1,0 +1,542 @@
+﻿@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.DeclarationDetailModel
+
+@if (Model.Declaration != null)
+{
+    <!-- Referral details section  -->
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <table class="govuk-table">
+                <tbody class="govuk-table__body">
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="LARemitText" scope="row"
+                            class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.ReferralMadeOutsideOfLAsRemit ?"govuk-form-group--error laf-table-error" :"")">Referral made outside of local authority remit</th>
+                        <td data-test-id="LARemitValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @Model.Declaration.ReferralMadeOutsideOfLAsRemit
+
+                            @if (Model.DeclarationErrorFields.ReferralMadeOutsideOfLAsRemit)
+                            {
+                                <p id="@Model.DeclarationErrorFields.ReferralMadeOutsideOfLAsRemitErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.ReferralMadeOutsideOfLAsRemitErrorMessage
+                                </p>
+                            }
+                        </td>
+
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+                                    <a class="govuk-link laflex-action" aria-label="Change Referral made outside of local authority"
+                                       asp-page="@LafPages.ReferralMadeOutsideOfLocalAuthorityRemit.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change Referral made outside of local authority</span>
+                                    </a>
+                                }
+                            }
+                        </td>
+                    </tr>
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="ReferralRouteText" scope="row"
+                            class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.ECO4orGreatBritishInsulationSchemeFlexReferralRoute ?"govuk-form-group--error laf-table-error" :"")">ECO4 or GBIS Flex referral route</th>
+                        <td data-test-id="ReferralRouteValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @Model.Declaration.ECO4orGreatBritishInsulationSchemeFlexReferralRoute
+
+                            @if (Model.DeclarationErrorFields.ECO4orGreatBritishInsulationSchemeFlexReferralRoute)
+                            {
+                                <p id="@Model.DeclarationErrorFields.ECO4orGreatBritishInsulationSchemeFlexReferralRouteErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.ECO4orGreatBritishInsulationSchemeFlexReferralRouteErrorMessage
+                                </p>
+                            }
+
+                        </td>
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+                                    <a class="govuk-link laflex-action" aria-label="Change ECO4/GBIS Flex referral route"
+                                       asp-page="@LafPages.Routes.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change ECO4/GBIS Flex referral route</span>
+                                    </a>
+                                }
+                            }
+                        </td>
+                    </tr>
+
+
+                    @if (@Model.Declaration.ECO4orGreatBritishInsulationSchemeFlexReferralRoute == Constants.Route2Text)
+                    {
+                        <tr class="govuk-table__row">
+                            <th data-test-id="Route2ProxiesText" scope="row"
+                                class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.Route2Proxies ? "govuk-form-group--error laf-table-error" : "")">Route 2 proxies</th>
+                            <td data-test-id="Route2Proxies" class="govuk-table__cell  govuk-!-width-one-third">
+                                @Model.Declaration.Route2Proxies
+
+                                @if (Model.DeclarationErrorFields.Route2Proxies)
+                                {
+                                    <p id="@Model.DeclarationErrorFields.Route2ProxiesErrorId" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Model.DeclarationErrorFields.Route2ProxiesErrorMessage
+                                    </p>
+                                }
+                            </td>
+
+                            <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                                @{
+                                    if (Model.DeclarationErrorFields.CanBeFixed)
+                                    {
+                                        <a class="govuk-link laflex-action" aria-label="Change Route 2 proxies"
+                                           asp-page="@LafPages.Routes2.ROUTE"
+                                           asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                           asp-route-declarationId="@Model.DeclarationId">
+                                            Change
+                                            <span class="govuk-visually-hidden">Change Route 2 proxies</span>
+                                        </a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+
+                        <tr class="govuk-table__row">
+                            <th data-test-id="AdditionalRoute2ProxiesText" scope="row"
+                                class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.AdditionalRoute2Proxies ? "govuk-form-group--error laf-table-error" : "")">Additional route 2 proxies</th>
+                            <td data-test-id="AdditionalRoute2ProxiesValue" class="govuk-table__cell  govuk-!-width-one-third">
+                                @Model.Declaration.AdditionalRoute2Proxies
+
+                                @if (Model.DeclarationErrorFields.AdditionalRoute2Proxies)
+                                {
+                                    <p id="@Model.DeclarationErrorFields.AdditionalRoute2ProxiesErrorId" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Model.DeclarationErrorFields.AdditionalRoute2ProxiesErrorMessage
+                                    </p>
+                                }
+                            </td>
+
+                            <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                                @{
+                                    if (Model.DeclarationErrorFields.CanBeFixed)
+                                    {
+                                        <a class="govuk-link laflex-action" aria-label="Change Route 2 additional proxies"
+                                           asp-page="@LafPages.Routes2Additional.ROUTE"
+                                           asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                           asp-route-declarationId="@Model.DeclarationId"
+                                           asp-route-doNotShowRoute="@Model.Declaration.Route2Proxies">
+                                            Change
+                                            <span class="govuk-visually-hidden">Change Additional route 2 proxies</span>
+                                        </a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+
+
+                    @if (@Model.Declaration.ECO4orGreatBritishInsulationSchemeFlexReferralRoute == Constants.Route4Text)
+                    {
+                        <tr class="govuk-table__row">
+                            <th data-test-id="Rout4ApplicationNumberText" scope="row"
+                                class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.Route4ApplicationNumber ? "govuk-form-group--error laf-table-error" : "")">Route 4 application number</th>
+                            <td data-test-id="Rout4ApplicationNumberValue" class="govuk-table__cell  govuk-!-width-one-third">
+                                @Model.Declaration.Route4ApplicationNumber
+
+                                @if (Model.DeclarationErrorFields.Route4ApplicationNumber)
+                                {
+                                    <p id="@Model.DeclarationErrorFields.Route4ApplicationNumberErrorId" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Model.DeclarationErrorFields.Route4ApplicationNumberErrorMessage
+                                    </p>
+                                }
+                            </td>
+
+                            <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                                @{
+                                    if (Model.DeclarationErrorFields.CanBeFixed)
+                                    {
+                                        <a class="govuk-link laflex-action" aria-label="Change Route 4 application number"
+                                           asp-page="@LafPages.Routes4.ROUTE"
+                                           asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                           asp-route-declarationId="@Model.DeclarationId">
+                                            Change
+                                            <span class="govuk-visually-hidden">Change Route 4 application number</span>
+                                        </a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Address section  -->
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <table class="govuk-table">
+                <tbody class="govuk-table__body">
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="AddressOfHouseholdText" scope="row" class="govuk-table__header govuk-!-width-one-half @(Model.DeclarationErrorFields.AddressOfHousehold ? "govuk-form-group--error laf-table-error" : "")">Address Of Household</th>
+                        <td data-test-id="AddressOfHouseholdValue" class="govuk-table__cell">
+                            @Model.Declaration.AddressLine1
+                            <br />
+                            @Model.Declaration.AddressLine2
+                            <br />
+                            @Model.Declaration.PostCode
+
+                            @if (Model.DeclarationErrorFields.AddressOfHousehold)
+                            {
+                                <p id="@Model.DeclarationErrorFields.AddressLine1ErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.AddressLine1ErrorMessage
+                                </p>
+
+                                <p id="@Model.DeclarationErrorFields.AddressLine2ErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.AddressLine2ErrorMessage
+                                </p>
+
+                                <p id="@Model.DeclarationErrorFields.PostCodeErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.PostCodeErrorMessage
+                                </p>
+                            }
+                        </td>
+
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+                                    <a class="govuk-link laflex-action" aria-label="Change Address of Household"
+                                       asp-page="@LafPages.AddressOfHousehold.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change Address of Household</span>
+                                    </a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Local authority details section  -->
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <table class="govuk-table">
+                <tbody class="govuk-table__body">
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="LAAreaCodeText" scope="row"
+                            class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.LAAreaCode ?"govuk-form-group--error laf-table-error" :"")">Local authority area code</th>
+                        <td data-test-id="LAAreaCodeValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @Model.Declaration.LAAreaCode
+
+                            @if (Model.DeclarationErrorFields.LAAreaCode)
+                            {
+                                <p id="@Model.DeclarationErrorFields.LAAreaCodeErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.LAAreaCodeErrorMessage
+                                </p>
+                            }
+                        </td>
+
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+
+                                    <a class="govuk-link laflex-action" aria-label="Change Local authority area code"
+                                       asp-page="@LafPages.AreaCode.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change Local authority area code</span>
+                                    </a>
+                                }
+                            }
+                        </td>
+
+                    </tr>
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="DOHouseholderEligibilityText" scope="row"
+                            class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.DateOfHouseholderEligibility ?"govuk-form-group--error laf-table-error" :"")">Date of householder eligibility</th>
+                        <td data-test-id="DOHouseholderEligibilityValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @Model.Declaration.DateOfHouseholderEligibilityForView
+
+                            @if (Model.DeclarationErrorFields.DateOfHouseholderEligibility)
+                            {
+                                <p id="@Model.DeclarationErrorFields.DateOfHouseholderEligibilityErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.DateOfHouseholderEligibilityErrorMessage
+                                </p>
+                            }
+                        </td>
+
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+
+                                    <a class="govuk-link laflex-action" aria-label="Change date of household eligibility"
+                                       asp-page="@LafPages.DateOfHouseHolderEligibility.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change date of household eligibility</span>
+                                    </a>
+                                }
+                            }
+                        </td>
+
+                    </tr>
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="WasLocalAuthorityConsultedText" scope="row"
+                            class="govuk-table__header govuk-!-width-one-half @(Model.DeclarationErrorFields.LAWasConsultedPriorToInstallationCompletion ?"govuk-form-group--error laf-table-error" :"")">Was local authority consulted prior to installation?</th>
+                        <td data-test-id="WasLocalAuthorityConsultedValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @Model.Declaration.LAWasConsultedPriorToInstallationCompletion
+
+                            @if (Model.DeclarationErrorFields.LAWasConsultedPriorToInstallationCompletion)
+                            {
+                                <p id="@Model.DeclarationErrorFields.LAWasConsultedPriorToInstallationCompletionErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.LAWasConsultedPriorToInstallationCompletionErrorMessage
+                                </p>
+                            }
+                        </td>
+
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+
+                                    <a class="govuk-link laflex-action" aria-label="Change Was local authority consulted prior to installation?"
+                                       asp-page="@LafPages.LaConsultedPriorToInstallation.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change Was local authority consulted prior to installation?</span>
+                                    </a>
+                                }
+                            }
+
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Statement of intent details section  -->
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <table class="govuk-table">
+                <tbody class="govuk-table__body">
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="SoIPublicationDateText" scope="row"
+                            class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.DateOfStatementOfIntentPublication ?"govuk-form-group--error laf-table-error" :"")">Statement of Intent publication date</th>
+                        <td data-test-id="SoIPublicationDateValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @Model.Declaration.DateOfStatementOfIntentPublicationForView
+
+                            @if (Model.DeclarationErrorFields.DateOfStatementOfIntentPublication)
+                            {
+                                <p id="@Model.DeclarationErrorFields.DateOfStatementOfIntentPublicationErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.DateOfStatementOfIntentPublicationErrorMessage
+                                </p>
+                            }
+                        </td>
+
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+                                    <a class="govuk-link laflex-action" aria-label="Change Statement of intent publication date"
+                                       asp-page="@LafPages.DateOfStatementOfIntentPublication.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change Statement of intent publication date</span>
+                                    </a>
+                                }
+                            }
+                        </td>
+
+                    </tr>
+
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="SoILinkText" scope="row"
+                            class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.StatementOfIntentLink ?"govuk-form-group--error laf-table-error" :"")">Statement of Intent link</th>
+                        <td data-test-id="SoILinkValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @Model.Declaration.StatementOfIntentLink
+
+                            @if (Model.DeclarationErrorFields.StatementOfIntentLink)
+                            {
+                                <p id="@Model.DeclarationErrorFields.StatementOfIntentLinkErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.StatementOfIntentLinkErrorMessage
+                                </p>
+                            }
+                        </td>
+
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+
+                                    <a class="govuk-link laflex-action" aria-label="Change Statement of intent link"
+                                       asp-page="@LafPages.StatementOfIntentLink.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change Statement of intent link</span>
+                                    </a>
+                                }
+                            }
+                        </td>
+
+                    </tr>
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="PublishedForText" scope="row"
+                            class="govuk-table__header  govuk-!-width-one-half @(Model.DeclarationErrorFields.StatementOfIntentPublishedFor ?"govuk-form-group--error laf-table-error" :"")">Published for</th>
+                        <td data-test-id="PublishedForValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @Model.Declaration.StatementOfIntentPublishedFor
+
+                            @if (Model.DeclarationErrorFields.StatementOfIntentPublishedFor)
+                            {
+                                <p id="@Model.DeclarationErrorFields.StatementOfIntentPublishedForErrorId" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span>
+                                    @Model.DeclarationErrorFields.StatementOfIntentPublishedForErrorMessage
+                                </p>
+                            }
+                        </td>
+
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric">
+                            @{
+                                if (Model.DeclarationErrorFields.CanBeFixed)
+                                {
+
+                                    <a class="govuk-link laflex-action" aria-label="Change published for"
+                                       asp-page="@LafPages.StatementOfIntentPublishedFor.ROUTE"
+                                       asp-page-handler="@LafPages.METHOD_GET_WITH_ID_ACTION"
+                                       asp-route-declarationId="@Model.DeclarationId">
+                                        Change
+                                        <span class="govuk-visually-hidden">Change published for</span>
+                                    </a>
+                                }
+                            }
+                        </td>
+
+                    </tr>
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="SoiStatusText" scope="row"
+                            class="govuk-table__header govuk-!-width-one-half">Statement of intent status</th>
+                        <td data-test-id="SoiStatusValue" class="govuk-table__cell  govuk-!-width-one-third">
+                            @{
+                                switch (Model.Declaration.SoiStatus)
+                                {
+                                    case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.FailedAssessment:
+                                        <strong class="govuk-tag laflex-tag--failedsoichecks"> Failed Assessment </strong>
+                                        break;
+
+                                    case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.AwaitingSignOff:
+                                        <strong class="govuk-tag laflex-tag--awaitingsignoff"> Awaiting Sign Off </strong>
+                                        break;
+
+                                    case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.PassedAssessment:
+                                        <strong class="govuk-tag laflex-tag--accepted"> Passed Assessment </strong>
+                                        break;
+
+                                    case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.ToBeAssessed:
+                                        <strong class="govuk-tag govuk-tag--blue">To be assessed</strong>
+                                        break;
+
+                                    case Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.Withdrawn:
+                                        <strong class="govuk-tag laflex-tag--withdrawn"> WITHDRAWN </strong>
+                                        break;
+
+                                    default:
+                                        <span> - </span>
+                                        break;
+                                }
+                            }
+                        </td>
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            @if (Model.Declaration.SoiStatus == 0)
+            {
+                <div class="govuk-inset-text">
+                    Unable to locate a Statement of Intent (SoI) for this declaration. Ensure the SoI publication date and area code entered in the Declaration Notification matches
+                    an SoI version in the portal.
+                </div>
+            }
+
+            @if (Model.Declaration.SoiStatus == Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.AwaitingSignOff ||
+           Model.Declaration.SoiStatus == Ofgem.LAF.SharedLibrary.Enums.SoiStatusV2.ToBeAssessed)
+            {
+                <div class="govuk-inset-text">
+                    The Statement of Intent is currently under review with the Ofgem Compliance team. We're reviewing the details you've provided to ensure they're correct.
+                    You can continue to upload declarations to the portal during this time
+                </div>
+            }
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Assessment details  -->
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <table class="govuk-table">
+                <caption class="govuk-table__caption govuk-table__caption--m">Upload details</caption>
+                <tbody class="govuk-table__body">
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="CreatedDateText" scope="row" class="govuk-table__header govuk-!-width-one-half">Date added</th>
+                        <td data-test-id="CreatedDateValue" class="govuk-table__cell  govuk-!-width-one-third">@(Model.Declaration.DisplayCreatedDate)</td>
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric"></td>
+                    </tr>
+
+                    <tr class="govuk-table__row">
+                        <th data-test-id="DeclarationStatusText" scope="row" class="govuk-table__header govuk-!-width-one-half">Status</th>
+                        <td data-test-id="DeclarationStatusValue" class="govuk-table__cell  govuk-!-width-one-third">
+
+                            @await Html.PartialAsync("_DeclarationStatus", Model.Declaration.Status)
+
+                        </td>
+                        <td class="govuk-table__cell govuk-!-width-one-third govuk-table__cell--numeric"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

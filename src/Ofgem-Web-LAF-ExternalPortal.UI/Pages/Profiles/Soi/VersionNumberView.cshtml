@@ -1,0 +1,81 @@
+﻿@page
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model VersionNumberViewModel
+
+@{
+    ViewData["Title"] = "Version Number View";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.PROFILES)" />
+
+<a asp-page="@LafPages.SOIDashboard.ROUTE"
+   asp-route-onsCode="@Model.OnsCode" class="govuk-back-link">Back</a>
+
+@if (Model.HasDisplayMessage)
+{
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+            <h2 data-test-id="CoreCheckText" class="govuk-error-summary__title">
+                Error:
+            </h2>
+            <div class="govuk-error-summary__body">
+                <p class="govuk-notification-banner__heading">@Model.DisplayMessage</p>
+            </div>
+        </div>
+    </div>
+}
+
+<main class="govuk-main-wrapper " id="version-number-main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+
+            <form method="post">
+
+                <input asp-for="OnsCode" type="hidden" />
+                <input asp-for="BaseLocalAuthorityId" type="hidden" />
+                <input asp-for="BaseLocalAuthorityName" type="hidden" />
+
+                <div class="govuk-form-group @(Model.SoiVersionHasError ? "govuk-form-group--error govuk-input--error input-validation-error" : "")">
+
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="dob-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <span class="govuk-caption-l">Add a new Statement of Intent</span>
+                            <h1 class="govuk-fieldset__heading">Version number</h1>
+                        </legend>
+
+                        <div id="dob-hint" class="govuk-hint">This must match the version published on the local authority website</div>
+
+                        @if (Model.SoiVersionHasError)
+                        {
+                            <div class="govuk-error-message la-flex-error-red  govuk-!-margin-top-1">@(Model.DisplayMessage)</div>
+                        }
+
+                        <input class="govuk-input govuk-input--width-10" id="SoiVersion" name="SoiVersion" type="text" asp-for="SoiVersion" aria-describedby="urn-number-hint">
+
+                    </fieldset>
+
+                    <div class="govuk-inset-text govuk-fieldset govuk-!-margin-top-6 govuk-!-width-three-quarters">
+                        You cannot add declarations on behalf of other local authorities until the Ofgem team assesses and passes the Statement of Intent that shows your local authority is uploading on their behalf.
+                    </div>
+
+                </div>
+                <div class="govuk-button-group govuk-!-margin-top-8">
+                    <button type="submit" class="govuk-button" data-module="govuk-button"
+                            asp-page="@LafPages.VersionNumberView.ROUTE"
+                            asp-page-handler="@LafPages.VersionNumberView.METHOD_CONTINUE">
+                        Continue
+                    </button>
+
+                    <a class="govuk-link" asp-page="@LafPages.SOIDashboard.ROUTE">Cancel</a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</main>
+
+                    
+

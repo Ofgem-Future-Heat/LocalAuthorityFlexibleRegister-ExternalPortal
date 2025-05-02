@@ -1,0 +1,67 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.Single.HouseholdEligibility
+@{
+    ViewData["Title"] = "Address Details - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SEND_DECLARATIONS)" />
+
+<a data-test-id="BackButton" asp-page="@LafPages.AddressDetails.ROUTE" class="govuk-back-link">Back</a>
+
+@if (Model is not null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+                <h2 class="govuk-error-summary__title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul data-test-id="ErrorList" class="govuk-list govuk-error-summary__list laflex-error-list">
+                        @foreach (var error in Model.DisplayMessages)
+                        {
+                            <li>
+                                <a href="#@Model.ErrorId"> @error</a>
+                            </li>
+                        }
+                    </ul>
+                    <br />
+                </div>
+            </div>
+        </div>
+    }
+
+    <form method="POST">
+        <span class="govuk-caption-l">Create a single declaration notification</span>
+        <div class="govuk-form-group @(Model.HasError ? "govuk-form-group--error" : "")">
+            <fieldset class="govuk-fieldset" role="group" aria-describedby="passport-issued-hint">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        What date did the household become eligible for the scheme?
+                    </h1>
+                </legend>
+                <div id="passport-issued-hint" class="govuk-hint">
+                    For example, 27 3 2023
+                </div>
+                <div class="govuk-form-group">
+                    <div class="govuk-form-group">
+                        @await Html.PartialAsync("Shared/_ThreePartDateNullable", Model.DateOfHouseholderEligibilityControl)
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="govuk-button-group govuk-!-margin-top-8">
+            <button class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+            <a class="govuk-link" asp-page="@LafPages.SendDeclaration.ROUTE">
+                Cancel
+            </a>
+        </div>
+    </form>
+}
+

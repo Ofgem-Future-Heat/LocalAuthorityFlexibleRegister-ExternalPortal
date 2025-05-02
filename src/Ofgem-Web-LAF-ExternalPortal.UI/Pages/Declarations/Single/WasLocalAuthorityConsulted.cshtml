@@ -1,0 +1,88 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.Single.WasLocalAuthorityConsulted
+@{
+    ViewData["Title"] = "Was Local Authority Consulted - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SEND_DECLARATIONS)" />
+
+<a data-test-id="BackButton" asp-page="@LafPages.HouseholdEligibility.ROUTE" class="govuk-back-link">Back</a>
+
+@if (Model is not null)
+{
+    <!-- Error summary  -->
+    @if (Model.HasError)
+    {
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+                <h2 class="govuk-error-summary__title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul data-test-id="ErrorList" class="govuk-list govuk-error-summary__list laflex-error-list">
+                        <li>
+                            <a href="#@Model.ErrorId"> @Model.DisplayMessage</a>
+                        </li>
+                    </ul>
+                    <br />
+                </div>
+            </div>
+        </div>
+    }
+
+    <form method="POST">
+        <span class="govuk-caption-l">Create a single declaration notification</span>
+        <div class="govuk-form-group @(Model.HasError ? "govuk-form-group--error" : "")">
+
+            <fieldset class="govuk-fieldset">
+
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+
+                    <h1 class="govuk-fieldset__heading">
+                        Was the local authority consulted prior to the installation?
+                    </h1>
+
+                </legend>
+
+
+                <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input"
+                               id="WasLocalAuthorityConsultedPriorToInstallation"
+                               name="WasLocalAuthorityConsultedPriorToInstallation"
+                               type="radio" 
+                               value="@true"
+                               asp-for="WasLocalAuthorityConsultedPriorToInstallation">
+
+                        <label class="govuk-label govuk-radios__label" for="WasLocalAuthorityConsultedPriorToInstallation">
+                            Yes
+                        </label>
+                    </div>
+    
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input"
+                               id="WasLocalAuthorityConsultedPriorToInstallation"
+                               name="WasLocalAuthorityConsultedPriorToInstallation"
+                               type="radio" 
+                               value="@false"
+                               asp-for="WasLocalAuthorityConsultedPriorToInstallation">
+
+                        <label class="govuk-label govuk-radios__label" for="WasLocalAuthorityConsultedPriorToInstallation">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="govuk-button-group govuk-!-margin-top-8">
+            <button class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+            <a class="govuk-link" asp-page="@LafPages.SendDeclaration.ROUTE">
+                Cancel
+            </a>
+        </div>
+    </form>
+}

@@ -1,0 +1,71 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Profiles.Soi.LinkViewModel
+@{
+    ViewData["Title"] = "Link";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.PROFILES)" />
+
+<a asp-page="@LafPages.DatePublishedView.ROUTE"
+   asp-route-onsCode="@Model.OnsCode" class="govuk-back-link">Back</a>
+
+@if (Model.HasDisplayMessage)
+{
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+            <h2 data-test-id="CoreCheckText" class="govuk-error-summary__title">
+                Error:
+            </h2>
+            <div class="govuk-error-summary__body">
+                <p class="govuk-notification-banner__heading">@Model.DisplayMessage</p>
+            </div>
+        </div>
+    </div>
+}
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+
+            <form method="post" novalidate="">
+
+                <input asp-for="OnsCode" type="hidden" />
+                <input asp-for="BaseLocalAuthorityId" type="hidden" />
+                <input asp-for="BaseLocalAuthorityName" type="hidden" />
+
+                <div class="govuk-form-group @(Model.SoiLinkHasError ? "govuk-form-group--error govuk-input--error input-validation-error" : "")">
+
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="dob-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                            <span class="govuk-caption-l">Add a new Statement of Intent</span>
+                            <h1 class="govuk-fieldset__heading">Link to published Statement of Intents</h1>
+                        </legend>
+
+                        <div id="dob-hint" class="govuk-hint govuk-!-width-two-thirds">Provide the website link to where your local authority publishes all their Statement of Intents, not directly to the document itself.</div>
+
+                        @if (Model.SoiLinkHasError)
+                        {
+                            <div class="govuk-error-message la-flex-error-red  govuk-!-margin-top-1">@(Model.DisplayMessage)</div>
+                        }
+
+                        <input class="govuk-input govuk-input--width-30"
+                               id="SoiLink" name="SoiLink" type="text"
+                               aria-describedby="soi-link-hint"
+                               asp-for="SoiLink">
+
+                    </fieldset>
+                </div>
+                <div class="govuk-button-group govuk-!-margin-top-8">
+                    <button type="submit" class="govuk-button" data-module="govuk-button"
+                            asp-page="@LafPages.LinkView.ROUTE"
+                            asp-page-handler="@LafPages.LinkView.METHOD_CONTINUE">
+                        Continue
+                    </button>
+
+                    <a class="govuk-link" asp-page="@LafPages.SOIDashboard.ROUTE">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

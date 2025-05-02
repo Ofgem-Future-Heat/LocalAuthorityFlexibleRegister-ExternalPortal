@@ -1,0 +1,30 @@
+﻿@page
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.TimedOutModel
+@{
+    ViewData["Title"] = "Session timed out page";
+
+    Layout = "_Layout_for_SignOut";
+}
+
+<br />
+<br />
+<br />
+
+<form data-no-timeout="true">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <h1 class="govuk-heading-l" role="status">
+                Your session has timed out
+            </h1>
+
+            <p role="status">You have been signed out and any information you have not saved has been deleted because you did not do anything for 20 minutes. We did this to keep your information secure.</p>
+
+            <p>
+                <a asp-page="@LafPages.LANDING" class="govuk-button" data-module="govuk-button">Start again</a>
+            </p>
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,75 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model UploadTemplateModel
+@{
+    ViewData["Title"] = "Upload declaration notification - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SEND_DECLARATIONS)" />
+
+<a data-test-id="BackButton" asp-page="@LafPages.SendDeclaration.ROUTE" class="govuk-back-link">Back</a>
+
+<form method="POST" enctype="multipart/form-data" onsubmit="disableSubmitButton()">
+
+    @if (Model.HasMessage)
+    {
+        <section class="govuk-notification-banner"
+                 aria-labelledby="govuk-notification-banner-title"
+                 data-module="govuk-notification-banner">
+            <div class="govuk-notification-banner__header">
+                <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                    Information
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+                <p data-test-id="GovukUploadCompletedNotificationText" class="govuk-notification-banner__heading">
+                    @Model.Message
+                </p>
+            </div>
+        </section>
+    }
+
+    <h1 class="govuk-heading-l">Upload declaration notification template</h1>
+
+    <!-- File upload block  with error messaging  - guide to the component: https://design-system.service.gov.uk/components/file-upload/ -->
+
+    <div class="govuk-form-group @(Model.HasUploadError ? "govuk-form-group--error" : "") ">
+        <label class="govuk-label" for="SelectedUploadFile">
+            Upload a file
+        </label>
+        @if (Model.HasUploadError)
+        {
+            <p data-test-id="file-upload-1-error" id="file-upload-1-error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">UploadError:</span>
+                @foreach (var item in Model.UploadErrors)
+                {
+                    <text>@item</text>
+
+                    <br>
+                }
+            </p>
+        }
+        <input class="govuk-file-upload  @(Model.HasUploadError ? "govuk-file-upload--error" : "")"
+               id="SelectedUploadFile"
+               name="SelectedUploadFile"
+               type="file"
+               asp-for="SelectedUploadFile"
+               data-test-id="GovukFileToUpload"
+               aria-describedby="@(Model.HasUploadError ? "file-upload-1-error" : "")" />
+    </div>
+
+    <!-- Details block -->
+
+    <div class="govuk-inset-text">
+        You must use the latest version of the declaration notification template from the Ofgem website to upload your declarations. The file must be saved as a CSV and be no more than 2MB.
+    </div>
+
+    <!-- Continue button -->
+    <div class="govuk-button-group">
+        <button id="SaveAndContinue" data-test-id="SaveAndContinue" class="govuk-button" data-module="govuk-button" type="submit">
+            Continue
+        </button>
+        <a class="govuk-link" asp-page="@LafPages.SendDeclaration.ROUTE">Cancel upload</a>
+    </div>
+</form>

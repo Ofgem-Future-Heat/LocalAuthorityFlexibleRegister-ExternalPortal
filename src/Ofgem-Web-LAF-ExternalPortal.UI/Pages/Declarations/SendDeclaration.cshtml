@@ -1,0 +1,90 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Ofgem_Web_LAF_ExternalPortal.Extensions
+@model Ofgem_Web_LAF_ExternalPortal.Pages.Declarations.SendDeclaration
+@{
+    ViewData["Title"] = "Declaration notification uploaded - LA Flex - Ofgem";
+}
+
+<input id="menuToSelect" type="hidden" value="@(LafPageMenus.SEND_DECLARATIONS)" />
+
+<!-- Error summary  -->
+@if (Model.HasError)
+{
+    @await Html.PartialAsync("Shared/_ChangeErrors", Model.DisplayMessage)
+}
+
+
+<h1 class="govuk-heading-l">Send declarations</h1>
+
+<p class="govuk-body">
+    Submit declaration notifications using the latest declaration notification template from the Ofgem website, or create a single declaration notification.
+</p>
+
+<p class="govuk-body govuk-!-margin-bottom-8">
+    If your Statement of Intent currently has a status of 'To Be Assessed', or 'Awaiting Sign-Off' you can still submit declaration notifications.
+</p>
+
+<form method="POST">
+    
+    <input asp-for="IsSingleDeclarationAllowed" type="hidden"/>
+
+    <div class="govuk-form-group @(Model.HasError ? "govuk-form-group--error laf-table-error" : "")">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                <h1 class="govuk-fieldset__heading">
+                    Select how you want to send declaration notifications to Ofgem
+                </h1>
+            </legend>
+
+            <div class="govuk-radios" data-module="govuk-radios">
+
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input"
+                           asp-for="SelectedMethod"
+                           id="routeUpload"
+                           type="radio"
+                           value="@Constants.DeclarationCreationUploadText" />
+
+                    <label class="govuk-label govuk-radios__label" for="routeUpload">
+                        Upload declaration notification template
+                    </label>
+                </div>
+                
+                @if (Model.IsSingleDeclarationAllowed)
+                {
+                    <div class="govuk-radios__item">
+                        <input class="govuk-radios__input"
+                               asp-for="SelectedMethod"
+                               id="routeSingle"
+                               type="radio"
+                               value="@Constants.DeclarationCreationSingleText"/>
+
+                        <label class="govuk-label govuk-radios__label" for="routeSingle">
+                            Create a single declaration notification
+                        </label>
+                    </div>
+                }
+
+            </div>
+
+        </fieldset>
+    </div>
+
+    <!-- Details block -->
+    <div class="govuk-inset-text">
+        You cannot add declaration notifications on behalf of other local authorities until the Ofgem team assesses and passes the Statement of Intent that shows your local authority is uploading on their behalf.
+    </div>
+
+    <div class="govuk-button-group govuk-!-margin-top-8">
+        <button type="submit" class="govuk-button" data-module="govuk-button">
+            Continue
+        </button>
+
+        <a class="govuk-link" asp-page="@LafPages.LANDING">
+            Cancel
+        </a>
+    </div>
+
+</form>
+

@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<Ofgem_Web_LAF_ExternalPortal.Models.AnnouncementView>
+
+@if (Model.Any())
+{
+    @foreach (var announcement in Model)
+    {
+        <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner" style="border: 5px solid #ffdd00">
+            <div class="govuk-notification-banner__header" style="color:#0b0c0c; background-color:#ffdd00">
+                <h2 class="govuk-notification-banner__title" style="color:#000" id="govuk-notification-banner-title">
+                    Announcement
+                </h2>
+            </div>
+            <div class="govuk-notification-banner__content">
+
+                <h3 class="govuk-notification-banner__heading" style="word-wrap: break-word">
+                    @announcement.Headline
+                </h3>
+                <p class="govuk-body" style="word-wrap: break-word">
+                    @announcement.Text
+                </p>
+                <p class="govuk-body-s">@announcement.PublishedSummary</p>
+
+                <p class="govuk-body-s govuk-link--no-visited-state">
+                    <a asp-page-handler="HideAnnouncement" asp-route-id="@announcement.AnnouncementId">Close this notification</a>
+                </p>
+            </div>
+        </div>
+    }
+}

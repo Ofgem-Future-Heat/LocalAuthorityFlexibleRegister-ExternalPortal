@@ -1,0 +1,31 @@
+﻿@page
+@model ForbiddenModel
+@{
+    ViewData["Title"] = "Forbidden";
+
+    Layout = "_Layout_without_Navigation";
+}
+<div class="govuk-width-container ">
+
+    <main data-test-id="failed-request-error-page-main" class="govuk-main-wrapper " id="403-main-content" role="main">
+        <br />
+        <br />
+        <div class="govuk-main-wrapper">
+            <h1 class="govuk-heading-xl">You do not have permission to use this service</h1>
+            <p class="govuk-body">This is because you do not currently have a user profile to use this service.</p>
+
+            <h2 class="govuk-heading-l">Request a Local Authority Flexible Eligibility user profile</h2>
+            <p class="govuk-body">The local authority <strong>Dedicated authorised signature</strong> or <strong>Managing local authority officer </strong> 
+                must request a user profile from Ofgem. They can do this by completing the 
+                <a href="https://submit.forms.service.gov.uk/form/6245/la-flex-user-setup/22337" class="govuk-link">'LA Flex user set-up form'</a>.
+            </p>
+        </div>
+
+        <div class="govuk-button-group">
+
+            <a href="https://www.ofgem.gov.uk/publications/great-british-insulation-scheme-and-eco4-local-authority-administration-guidance" class="govuk-button">
+                Read Ofgem LA Flex guidance on Ofgem website</a>
+
+        </div>
+    </main>
+</div>
